@@ -1,4 +1,30 @@
-const groups = {
+// ======================================================
+// CUPA BOEMIA — APP.JS
+// 9-BALL + 8-BALL
+// ======================================================
+
+
+// ------------------------------------------------------
+// SUPABASE
+// ------------------------------------------------------
+
+const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_mVu4zRZY5-7Ay7n7Uqk1A_4BRk_AgA";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+// ------------------------------------------------------
+// JUCĂTORI
+// ------------------------------------------------------
+
+const GROUPS = {
+
   A: [
     "Alexa Mihai",
     "Nicu Hoha",
@@ -8,6 +34,7 @@ const groups = {
     "Dragan Razvan",
     "Gicu Maier"
   ],
+
   B: [
     "Petri Ionut",
     "Daniel Gusețh",
@@ -15,6 +42,7 @@ const groups = {
     "Iuga Darius",
     "Rus Ovidiu"
   ],
+
   C: [
     "Pop Calin",
     "Pagu Bogdan",
@@ -22,6 +50,7 @@ const groups = {
     "Matei Morariu",
     "Liță Nicolae"
   ],
+
   D: [
     "Șimon Daniel",
     "Alex Rus",
@@ -29,6 +58,7 @@ const groups = {
     "Cosmin Bizau",
     "Gigi Mari"
   ],
+
   E: [
     "Mare Sebastian",
     "Bugnar Mihai",
@@ -36,603 +66,771 @@ const groups = {
     "Sergiu Moisa",
     "Gigi Ghile"
   ]
+
 };
 
-const SUPABASE_URL =
-  "https://huxfvsjfgkbvzncgqjyl.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_mVu4zRZY5-7Ay7n7uUqk1A_4BRk_AgA";
+// ------------------------------------------------------
+// DISCIPLINA
+// ------------------------------------------------------
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+// Dacă pagina are:
+// <body data-discipline="8ball">
+// atunci afișează 8-Ball.
+//
+// Dacă nu există atributul, folosim 9-Ball.
 
-let matches = [];
+const DISCIPLINE =
+  document.body.dataset.discipline || "9ball";
 
 
-/* =========================
-   FORMULAR SCOR
-========================= */
+// ------------------------------------------------------
+// NUME DISCIPLINĂ
+// ------------------------------------------------------
 
-function setupScoreForm() {
-  const group = document.querySelector("#scoreGroup");
-  const player1 = document.querySelector("#scorePlayer1");
-  const player2 = document.querySelector("#scorePlayer2");
+function disciplineName() {
 
-  if (!group) return;
-
-  group.innerHTML = Object.keys(groups)
-    .map(g => `<option value="${g}">Grupa ${g}</option>`)
-    .join("");
-
-  function updatePlayers() {
-    const players = groups[group.value];
-
-    player1.innerHTML = players
-      .map(p => `<option value="${p}">${p}</option>`)
-      .join("");
-
-    player2.innerHTML = players
-      .map((p, i) =>
-        `<option value="${p}" ${i === 1 ? "selected" : ""}>${p}</option>`
-      )
-      .join("");
+  if (DISCIPLINE === "8ball") {
+    return "8-BALL";
   }
 
-  group.addEventListener("change", updatePlayers);
-
-  updatePlayers();
-
-  document
-    .querySelector("#scoreForm")
-    .addEventListener("submit", async event => {
-
-      event.preventDefault();
-
-      const message = document.querySelector("#scoreMessage");
-
-      const groupName = group.value;
-      const p1 = player1.value;
-      const p2 = player2.value;
-
-      const s1 = Number(
-        document.querySelector("#score1").value
-      );
-
-      const s2 = Number(
-        document.querySelector("#score2").value
-      );
-
-      if (p1 === p2) {
-        message.textContent =
-          "Alege doi jucători diferiți.";
-        message.className = "score-message err";
-        return;
-      }
-
-      if (
-        !Number.isInteger(s1) ||
-        !Number.isInteger(s2) ||
-        s1 < 0 ||
-        s2 < 0 ||
-        s1 > 6 ||
-        s2 > 6
-      ) {
-        message.textContent =
-          "Scorul trebuie să fie între 0 și 6.";
-        message.className = "score-message err";
-        return;
-      }
-
-      if (
-        s1 === s2 ||
-        (s1 !== 6 && s2 !== 6)
-      ) {
-        message.textContent =
-          "Scor invalid. Exemplu: 6–4 sau 6–5.";
-        message.className = "score-message err";
-        return;
-      }
-
-      message.textContent = "Se salvează...";
-      message.className = "score-message";
-
-      const { error } = await db
-        .from("matches")
-        .insert({
-          group_name: groupName,
-          player1: p1,
-          player2: p2,
-          score1: s1,
-          score2: s2
-        });
-
-      if (error) {
-        console.error(error);
-
-        message.textContent =
-          "Eroare la salvare. Verifică Supabase.";
-        message.className =
-          "score-message err";
-
-        return;
-      }
-
-      message.textContent =
-        "✓ Rezultatul a fost salvat!";
-
-      message.className =
-        "score-message ok";
-
-      document.querySelector("#score1").value = "";
-      document.querySelector("#score2").value = "";
-
-      await loadMatches();
-    });
+  return "9-BALL";
 }
 
 
-/* =========================
-   CLASAMENT
-========================= */
+// ------------------------------------------------------
+// FORMULAR ADMIN
+// ------------------------------------------------------
 
-function renderGroups() {
+function setupScoreForm() {
 
-  const stats = {};
+  const form = document.getElementById("scoreForm");
 
-  Object.values(groups)
-    .flat()
-    .forEach(player => {
-      stats[player] = {
-        matches: 0,
-        wins: 0,
-        losses: 0,
-        points: 0
-      };
-    });
-
-  matches.forEach(match => {
-
-    const p1 = stats[match.player1];
-    const p2 = stats[match.player2];
-
-    if (!p1 || !p2) return;
-
-    p1.matches++;
-    p2.matches++;
-
-    if (match.score1 > match.score2) {
-
-      p1.wins++;
-      p2.losses++;
-      p1.points++;
-
-    } else {
-
-      p2.wins++;
-      p1.losses++;
-      p2.points++;
-    }
-  });
-
-
-  document.querySelector("#groups").innerHTML =
-    Object.entries(groups)
-      .map(([groupName, players]) => {
-
-        const sortedPlayers = [...players].sort(
-          (a, b) =>
-            stats[b].points - stats[a].points ||
-            stats[b].wins - stats[a].wins
-        );
-
-        return `
-          <article class="group">
-
-            <div class="group-title">
-              <b>Grupa ${groupName}</b>
-              <span>
-                ${players.length} jucători • Round-robin
-              </span>
-            </div>
-
-            <table class="table">
-
-              <thead>
-                <tr>
-                  <th>Jucător</th>
-                  <th>M</th>
-                  <th>V</th>
-                  <th>Î</th>
-                  <th>Pts</th>
-                </tr>
-              </thead>
-
-              <tbody>
-
-                ${sortedPlayers.map((player, index) => {
-
-                  const s = stats[player];
-
-                  return `
-                    <tr>
-
-                      <td>
-                        <span class="rank">
-                          ${index + 1}
-                        </span>
-
-                        <span class="player">
-                          ${player}
-                        </span>
-                      </td>
-
-                      <td>${s.matches}</td>
-                      <td>${s.wins}</td>
-                      <td>${s.losses}</td>
-                      <td>${s.points}</td>
-
-                    </tr>
-                  `;
-
-                }).join("")}
-
-              </tbody>
-
-            </table>
-
-          </article>
-        `;
-
-      })
-      .join("");
-}
-
-
-/* =========================
-   MECIURI RECENTE
-========================= */
-
-function renderRecent() {
-
-  const recent =
-    [...matches]
-      .sort(
-        (a, b) =>
-          new Date(b.created_at) -
-          new Date(a.created_at)
-      )
-      .slice(0, 8);
-
-  if (!recent.length) {
-
-    document.querySelector(
-      "#recentMatches"
-    ).innerHTML = `
-      <div class="match-card">
-        <b>Niciun rezultat încă.</b>
-      </div>
-    `;
-
+  if (!form) {
     return;
   }
 
 
-  document.querySelector(
-    "#recentMatches"
-  ).innerHTML = recent
-    .map(match => `
-      <div class="match-card">
+  const disciplineSelect =
+    document.getElementById("scoreDiscipline");
 
-        <div>
-          <b>${match.player1}</b>
-          <small> vs </small>
-          <b>${match.player2}</b>
+  const groupSelect =
+    document.getElementById("scoreGroup");
 
-          <small>
-            • Grupa ${match.group_name}
-          </small>
-        </div>
+  const player1Select =
+    document.getElementById("scorePlayer1");
 
-        <div class="score">
-          ${match.score1}–${match.score2}
-        </div>
+  const player2Select =
+    document.getElementById("scorePlayer2");
 
-      </div>
-    `)
-    .join("");
-}
+  const score1Input =
+    document.getElementById("score1");
+
+  const score2Input =
+    document.getElementById("score2");
+
+  const message =
+    document.getElementById("scoreMessage");
 
 
-/* =========================
-   PLAYOFF
-========================= */
+  // ----------------------------------------------------
+  // GRUPE
+  // ----------------------------------------------------
 
-function getStandings(groupName) {
+  groupSelect.addEventListener("change", () => {
 
-  const players = groups[groupName];
+    const group = groupSelect.value;
 
-  const stats = players.map(player => ({
-    player,
-    points: 0,
-    wins: 0
-  }));
+    player1Select.innerHTML =
+      '<option value="">Alege jucătorul</option>';
 
-  matches.forEach(match => {
+    player2Select.innerHTML =
+      '<option value="">Alege jucătorul</option>';
+
+    if (!group || !GROUPS[group]) {
+      return;
+    }
+
+
+    GROUPS[group].forEach(player => {
+
+      const option1 =
+        document.createElement("option");
+
+      option1.value = player;
+      option1.textContent = player;
+
+      player1Select.appendChild(option1);
+
+
+      const option2 =
+        document.createElement("option");
+
+      option2.value = player;
+      option2.textContent = player;
+
+      player2Select.appendChild(option2);
+
+    });
+
+  });
+
+
+  // ----------------------------------------------------
+  // SALVARE REZULTAT
+  // ----------------------------------------------------
+
+  form.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+
+    const discipline =
+      disciplineSelect.value;
+
+    const group =
+      groupSelect.value;
+
+    const player1 =
+      player1Select.value;
+
+    const player2 =
+      player2Select.value;
+
+    const score1 =
+      Number(score1Input.value);
+
+    const score2 =
+      Number(score2Input.value);
+
+
+    // -----------------------------------------------
+    // VALIDĂRI
+    // -----------------------------------------------
+
+    if (!discipline) {
+
+      message.textContent =
+        "Alege disciplina.";
+
+      return;
+    }
+
+
+    if (!group) {
+
+      message.textContent =
+        "Alege grupa.";
+
+      return;
+    }
+
+
+    if (!player1 || !player2) {
+
+      message.textContent =
+        "Alege ambii jucători.";
+
+      return;
+    }
+
+
+    if (player1 === player2) {
+
+      message.textContent =
+        "Un jucător nu poate juca împotriva lui însuși.";
+
+      return;
+    }
+
 
     if (
-      match.group_name !== groupName
-    ) return;
+      score1 < 0 ||
+      score1 > 6 ||
+      score2 < 0 ||
+      score2 > 6
+    ) {
 
-    const p1 = stats.find(
-      x => x.player === match.player1
-    );
+      message.textContent =
+        "Scorul trebuie să fie între 0 și 6.";
 
-    const p2 = stats.find(
-      x => x.player === match.player2
-    );
-
-    if (!p1 || !p2) return;
-
-    if (match.score1 > match.score2) {
-      p1.points++;
-      p1.wins++;
-    } else {
-      p2.points++;
-      p2.wins++;
+      return;
     }
+
+
+    if (score1 === score2) {
+
+      message.textContent =
+        "Un meci nu poate fi egal.";
+
+      return;
+    }
+
+
+    if (score1 !== 6 && score2 !== 6) {
+
+      message.textContent =
+        "Unul dintre jucători trebuie să aibă 6.";
+
+      return;
+    }
+
+
+    // -----------------------------------------------
+    // SALVARE ÎN SUPABASE
+    // -----------------------------------------------
+
+    message.textContent =
+      "Se salvează...";
+
+
+    const { error } = await db
+      .from("matches")
+      .insert({
+
+        discipline: discipline,
+
+        group_name: group,
+
+        player1: player1,
+
+        player2: player2,
+
+        score1: score1,
+
+        score2: score2
+
+      });
+
+
+    if (error) {
+
+      console.error(error);
+
+      message.textContent =
+        "Eroare la salvare: " + error.message;
+
+      return;
+    }
+
+
+    message.textContent =
+      `Rezultat salvat: ${player1} ${score1}–${score2} ${player2} (${disciplineName()})`;
+
+
+    // resetăm scorurile
+
+    score1Input.value = "";
+    score2Input.value = "";
+
+
+    // reîncărcăm rezultatele
+
+    await loadMatches();
+
   });
 
-  return stats.sort(
-    (a, b) =>
-      b.points - a.points ||
-      b.wins - a.wins
-  );
 }
 
 
-function renderPlayoff() {
-
-  const standings = {};
-
-  Object.keys(groups).forEach(group => {
-    standings[group] =
-      getStandings(group);
-  });
-
-
-  function player(group, position) {
-
-    return (
-      standings[group]?.[position - 1]
-        ?.player ||
-      `${group}${position}`
-    );
-  }
-
-
-  const playoff = [
-
-    [
-      [
-        player("B", 2),
-        player("C", 3)
-      ],
-
-      [
-        player("C", 2),
-        player("D", 3)
-      ],
-
-      [
-        player("D", 2),
-        player("E", 3)
-      ],
-
-      [
-        player("E", 2),
-        player("B", 3)
-      ]
-    ],
-
-    [
-      [
-        "Câștigător 1",
-        "Câștigător 2"
-      ],
-
-      [
-        "Câștigător 3",
-        "Câștigător 4"
-      ]
-    ],
-
-    [
-      [
-        "Câștigător SF1",
-        "Câștigător SF2"
-      ]
-    ]
-
-  ];
-
-
-  document.querySelector(
-    "#playoffBracket"
-  ).innerHTML = playoff
-    .map((round, index) => `
-
-      <div class="round">
-
-        <h3>
-          ${
-            [
-              "SFERTURI • 8",
-              "SEMIFINALE • 4",
-              "FINALĂ PLAYOFF • 2"
-            ][index]
-          }
-        </h3>
-
-        ${
-          round
-            .map(game => `
-              <div class="match">
-
-                <div class="row">
-                  <span>${game[0]}</span>
-                  <span class="score"></span>
-                </div>
-
-                <div class="row">
-                  <span>${game[1]}</span>
-                  <span class="score"></span>
-                </div>
-
-              </div>
-            `)
-            .join("")
-        }
-
-      </div>
-
-    `)
-    .join("");
-}
-
-
-/* =========================
-   TOP 8
-========================= */
-
-function renderTop8() {
-
-  const top8 = [
-
-    [
-      [
-        "Calificat direct 1",
-        "Câștigător playoff"
-      ],
-
-      [
-        "Calificat direct 4",
-        "Calificat direct 5"
-      ]
-    ],
-
-    [
-      [
-        "Câștigător QF1",
-        "Câștigător QF2"
-      ],
-
-      [
-        "Calificat direct 2",
-        "Calificat direct 3"
-      ]
-    ],
-
-    [
-      [
-        "Finalist 1",
-        "Finalist 2"
-      ]
-    ]
-
-  ];
-
-
-  document.querySelector(
-    "#top8Bracket"
-  ).innerHTML = top8
-    .map((round, index) => `
-
-      <div class="round">
-
-        <h3>
-          ${
-            [
-              "SFERTURI",
-              "SEMIFINALE",
-              "FINALĂ"
-            ][index]
-          }
-        </h3>
-
-        ${
-          round.map(game => `
-            <div class="match">
-
-              <div class="row">
-                <span>${game[0]}</span>
-                <span class="score"></span>
-              </div>
-
-              <div class="row">
-                <span>${game[1]}</span>
-                <span class="score"></span>
-              </div>
-
-            </div>
-          `).join("")
-        }
-
-      </div>
-
-    `)
-    .join("");
-}
-
-
-/* =========================
-   ÎNCĂRCARE DIN SUPABASE
-========================= */
+// ------------------------------------------------------
+// ÎNCARCĂ MECIURILE
+// ------------------------------------------------------
 
 async function loadMatches() {
 
-  const { data, error } =
-    await db
-      .from("matches")
-      .select("*")
-      .order(
-        "created_at",
-        { ascending: false }
-      );
+  const { data, error } = await db
+    .from("matches")
+    .select("*")
+    .eq("discipline", DISCIPLINE)
+    .order("created_at", {
+      ascending: false
+    });
+
 
   if (error) {
 
-    console.error(error);
-
-    const message =
-      document.querySelector(
-        "#scoreMessage"
-      );
-
-    if (message) {
-      message.textContent =
-        "Nu pot accesa baza de date Supabase.";
-      message.className =
-        "score-message err";
-    }
+    console.error(
+      "Eroare la încărcarea meciurilor:",
+      error
+    );
 
     return;
   }
 
-  matches = data || [];
 
-  renderGroups();
-  renderRecent();
-  renderPlayoff();
-  renderTop8();
+  window.allMatches = data || [];
+
+
+  renderGroups(window.allMatches);
+
+  renderRecent(window.allMatches);
+
+  renderPlayoff(window.allMatches);
+
+  renderTop8(window.allMatches);
 }
 
 
-/* =========================
-   START
-========================= */
+// ------------------------------------------------------
+// CLASAMENT
+// ------------------------------------------------------
+
+function getStandings(group, matches) {
+
+  const players =
+    GROUPS[group] || [];
+
+
+  const standings =
+    players.map(player => ({
+
+      player: player,
+
+      played: 0,
+
+      wins: 0,
+
+      losses: 0,
+
+      points: 0,
+
+      racksWon: 0,
+
+      racksLost: 0
+
+    }));
+
+
+  matches
+    .filter(match =>
+      match.group_name === group
+    )
+    .forEach(match => {
+
+      const p1 =
+        standings.find(
+          item => item.player === match.player1
+        );
+
+      const p2 =
+        standings.find(
+          item => item.player === match.player2
+        );
+
+
+      if (!p1 || !p2) {
+        return;
+      }
+
+
+      p1.played++;
+      p2.played++;
+
+
+      p1.racksWon += match.score1;
+      p1.racksLost += match.score2;
+
+      p2.racksWon += match.score2;
+      p2.racksLost += match.score1;
+
+
+      if (match.score1 > match.score2) {
+
+        p1.wins++;
+        p2.losses++;
+
+        p1.points += 2;
+
+      } else {
+
+        p2.wins++;
+        p1.losses++;
+
+        p2.points += 2;
+
+      }
+
+    });
+
+
+  standings.forEach(player => {
+
+    player.diff =
+      player.racksWon -
+      player.racksLost;
+
+  });
+
+
+  // ----------------------------------------------------
+  // ORDINE CLASAMENT
+  // ----------------------------------------------------
+
+  standings.sort((a, b) => {
+
+    if (b.points !== a.points) {
+      return b.points - a.points;
+    }
+
+    if (b.wins !== a.wins) {
+      return b.wins - a.wins;
+    }
+
+    return b.diff - a.diff;
+
+  });
+
+
+  return standings;
+}
+
+
+// ------------------------------------------------------
+// AFIȘARE GRUPE
+// ------------------------------------------------------
+
+function renderGroups(matches) {
+
+  const container =
+    document.getElementById("groupsContainer");
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  Object.keys(GROUPS).forEach(group => {
+
+    const standings =
+      getStandings(group, matches);
+
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "group-card";
+
+
+    let html = `
+
+      <div class="group-title">
+
+        <span>GRUPA ${group}</span>
+
+        <small>${disciplineName()}</small>
+
+      </div>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>#</th>
+
+              <th>Jucător</th>
+
+              <th>M</th>
+
+              <th>V</th>
+
+              <th>Î</th>
+
+              <th>Dif.</th>
+
+              <th>Pts</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+    `;
+
+
+    standings.forEach((player, index) => {
+
+      html += `
+
+        <tr>
+
+          <td>${index + 1}</td>
+
+          <td>
+            <strong>${player.player}</strong>
+          </td>
+
+          <td>${player.played}</td>
+
+          <td>${player.wins}</td>
+
+          <td>${player.losses}</td>
+
+          <td>${player.diff}</td>
+
+          <td>
+            <strong>${player.points}</strong>
+          </td>
+
+        </tr>
+
+      `;
+
+    });
+
+
+    html += `
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+
+    card.innerHTML = html;
+
+
+    container.appendChild(card);
+
+  });
+
+}
+
+
+// ------------------------------------------------------
+// REZULTATE RECENTE
+// ------------------------------------------------------
+
+function renderRecent(matches) {
+
+  const container =
+    document.getElementById("recentMatches");
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  if (!matches.length) {
+
+    container.innerHTML =
+      "<p>Nu există încă rezultate.</p>";
+
+    return;
+  }
+
+
+  matches
+    .slice(0, 20)
+    .forEach(match => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "match-item";
+
+
+      item.innerHTML = `
+
+        <div>
+
+          <small>
+            Grupa ${match.group_name}
+          </small>
+
+          <strong>
+            ${match.player1}
+          </strong>
+
+          <span>vs</span>
+
+          <strong>
+            ${match.player2}
+          </strong>
+
+        </div>
+
+
+        <div class="match-score">
+
+          ${match.score1}
+          –
+          ${match.score2}
+
+        </div>
+
+      `;
+
+
+      container.appendChild(item);
+
+    });
+
+}
+
+
+// ------------------------------------------------------
+// PLAYOFF
+// ------------------------------------------------------
+
+function renderPlayoff(matches) {
+
+  const container =
+    document.getElementById("playoffBracket");
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const qualified =
+    getQualifiedPlayers(matches);
+
+
+  container.innerHTML = `
+
+    <div class="bracket-round">
+
+      <h3>PLAYOFF — 8 JUCĂTORI</h3>
+
+      ${qualified.map((player, index) => `
+
+        <div class="bracket-match">
+
+          <span>${index + 1}</span>
+
+          <strong>
+            ${player || "În așteptare"}
+          </strong>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+  `;
+
+}
+
+
+// ------------------------------------------------------
+// TOP 8
+// ------------------------------------------------------
+
+function renderTop8(matches) {
+
+  const container =
+    document.getElementById("top8Bracket");
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const qualified =
+    getQualifiedPlayers(matches);
+
+
+  container.innerHTML = `
+
+    <div class="bracket-round">
+
+      <h3>TOP 8 — ${disciplineName()}</h3>
+
+      ${qualified.map((player, index) => `
+
+        <div class="bracket-match">
+
+          <span>${index + 1}</span>
+
+          <strong>
+            ${player || "În așteptare"}
+          </strong>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+  `;
+
+}
+
+
+// ------------------------------------------------------
+// CALIFICĂRI
+// ------------------------------------------------------
+
+function getQualifiedPlayers(matches) {
+
+  const qualified = [];
+
+
+  // ----------------------------------------------------
+  // GRUPA A
+  // Primii 2
+  // ----------------------------------------------------
+
+  const groupA =
+    getStandings("A", matches);
+
+
+  qualified.push(
+    groupA[0]?.player || null
+  );
+
+  qualified.push(
+    groupA[1]?.player || null
+  );
+
+
+  // ----------------------------------------------------
+  // GRUPELE B-E
+  // ----------------------------------------------------
+
+  ["B", "C", "D", "E"]
+    .forEach(group => {
+
+      const standings =
+        getStandings(group, matches);
+
+
+      qualified.push(
+        standings[0]?.player || null
+      );
+
+    });
+
+
+  return qualified.slice(0, 8);
+}
+
+
+// ------------------------------------------------------
+// START
+// ------------------------------------------------------
 
 setupScoreForm();
+
 loadMatches();
