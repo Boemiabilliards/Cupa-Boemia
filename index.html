@@ -1,135 +1,182 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cupa Boemia 9-Ball — Ediția 4</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Cupa Boemia — Ediția 4</title>
 
   <link rel="stylesheet" href="style.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body>
 
-<header class="topbar">
-  <div class="brand">
-    <div class="ball">9</div>
-    <div>
-      <b>CUPA BOEMIA</b>
-      <small>9-BALL • EDIȚIA 4</small>
-    </div>
-  </div>
+<body class="portal">
 
-  <nav>
-    <a href="#acasa">Acasă</a>
-    <a href="#groups">Grupe</a>
-    <a href="#playoff">Playoff</a>
-    <a href="#top8">Top 8</a>
-    <a href="#recent">Rezultate</a>
-  </nav>
-</header>
 
-<main>
+  <!-- ==================================================
+       HEADER
+  =================================================== -->
 
-<section id="acasa" class="hero">
-  <div class="eyebrow">CAMPIONAT DE BILIARD</div>
+  <header class="topbar">
 
-  <h1>CUPA<br><span>BOEMIA</span></h1>
+    <div class="brand">
 
-  <p>
-    9-Ball • Ediția 4<br>
-    Grupe, playoff și clasament live.
-  </p>
+      <div class="ball">●</div>
 
-  <div class="hero-actions">
-    <a class="btn primary" href="#groups">Vezi grupele</a>
-    <a class="btn" href="#playoff">Vezi playoff</a>
-  </div>
-</section>
+      <div>
 
-<section class="stats">
-  <div>
-    <strong>27</strong>
-    <span>Jucători</span>
-  </div>
+        <b>CUPA BOEMIA</b>
 
-  <div>
-    <strong>5</strong>
-    <span>Grupe</span>
-  </div>
+        <small>
+          EDIȚIA 4
+        </small>
 
-  <div>
-    <strong>61</strong>
-    <span>Meciuri în grupe</span>
-  </div>
+      </div>
 
-  <div>
-    <strong>8</strong>
-    <span>Playoff</span>
-  </div>
-</section>
-
-<section id="groups" class="section">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">FAZA GRUPELOR</div>
-      <h2>Grupe</h2>
     </div>
 
-    <p>Clasamente actualizate după rezultatele introduse.</p>
-  </div>
+  </header>
 
-  <div id="groupsContainer" class="groups"></div>
-</section>
 
-<section id="playoff" class="section dark-section">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">FAZA FINALĂ</div>
-      <h2>Playoff</h2>
-    </div>
 
-    <p>8 jucători → 4 → 2</p>
-  </div>
+  <!-- ==================================================
+       HERO
+  =================================================== -->
 
-  <div id="playoffBracket" class="bracket"></div>
-</section>
+  <main>
 
-<section id="top8" class="section light">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">FAZA FINALĂ</div>
-      <h2>Top 8</h2>
-    </div>
+    <section class="portal-hero">
 
-    <p>Cei 8 jucători calificați.</p>
-  </div>
+      <div class="eyebrow">
+        CAMPIONAT DE BILIARD
+      </div>
 
-  <div id="top8Bracket" class="bracket"></div>
-</section>
 
-<section id="recent" class="section">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow">LIVE</div>
-      <h2>Meciuri recente</h2>
-    </div>
+      <h1>
+        CUPA
+        <span>BOEMIA</span>
+      </h1>
 
-    <p>Ultimele rezultate introduse.</p>
-  </div>
 
-  <div id="recentMatches" class="matches"></div>
-</section>
+      <p>
+        Ediția 4
+        <br>
+        Alege disciplina
+      </p>
 
-</main>
+    </section>
 
-<footer>
-  <span>Cupa Boemia 9-Ball</span>
-  <b>Ediția 4</b>
-</footer>
 
-<script src="app.js"></script>
+
+    <!-- ==================================================
+         DISCIPLINE
+    =================================================== -->
+
+    <section class="disciplines">
+
+
+      <!-- 9-BALL -->
+
+      <a
+        href="9ball.html"
+        class="discipline-card card-9ball"
+      >
+
+        <div class="discipline-ball">
+          9
+        </div>
+
+
+        <div class="discipline-info">
+
+          <div class="eyebrow">
+            DISCIPLINA
+          </div>
+
+          <h2>
+            9-BALL
+          </h2>
+
+          <p>
+            Grupe • Clasament • Playoff
+          </p>
+
+          <span class="discipline-button">
+            INTRĂ ÎN 9-BALL →
+          </span>
+
+        </div>
+
+      </a>
+
+
+
+      <!-- 8-BALL -->
+
+      <a
+        href="8ball.html"
+        class="discipline-card card-8ball"
+      >
+
+        <div class="discipline-ball">
+          8
+        </div>
+
+
+        <div class="discipline-info">
+
+          <div class="eyebrow">
+            DISCIPLINA
+          </div>
+
+          <h2>
+            8-BALL
+          </h2>
+
+          <p>
+            Grupe • Clasament • Playoff
+          </p>
+
+          <span class="discipline-button">
+            INTRĂ ÎN 8-BALL →
+          </span>
+
+        </div>
+
+      </a>
+
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- ==================================================
+       FOOTER
+  =================================================== -->
+
+  <footer>
+
+    <span>
+      Cupa Boemia
+    </span>
+
+    <b>
+      Ediția 4
+    </b>
+
+  </footer>
+
 
 </body>
+
 </html>
