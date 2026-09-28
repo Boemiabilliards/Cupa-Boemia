@@ -3,7 +3,7 @@
 Site-ul turneului de biliard 9-Ball.
 
 Format inițial:
-- 29 jucători
+- 27 jucători
 - Grupa A: 7 jucători
 - Grupele B–E: câte 5 jucători
 - Round-robin
