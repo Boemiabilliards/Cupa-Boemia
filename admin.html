@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cupa Boemia — Admin</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="ball">9</div>
+      <div>
+        <b>CUPA BOEMIA</b>
+        <small>ADMIN • EDIȚIA 4</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html">← Site public</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="section score-section">
+
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">ADMIN</div>
+          <h2>Adaugă rezultat</h2>
+        </div>
+
+        <p>Introdu aici rezultatele meciurilor.</p>
+      </div>
+
+      <form id="scoreForm" class="score-form">
+
+        <label>
+          GRUPA
+          <select id="scoreGroup" required></select>
+        </label>
+
+        <label>
+          JUCĂTOR 1
+          <select id="scorePlayer1" required></select>
+        </label>
+
+        <label>
+          JUCĂTOR 2
+          <select id="scorePlayer2" required></select>
+        </label>
+
+        <label>
+          SCOR JUCĂTOR 1
+          <input id="score1" type="number" min="0" max="6" required>
+        </label>
+
+        <label>
+          SCOR JUCĂTOR 2
+          <input id="score2" type="number" min="0" max="6" required>
+        </label>
+
+        <button class="btn primary" type="submit">
+          Salvează rezultatul
+        </button>
+
+        <div id="scoreMessage" class="score-message"></div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <span>Cupa Boemia 9-Ball</span>
+    <b>ADMIN</b>
+  </footer>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
