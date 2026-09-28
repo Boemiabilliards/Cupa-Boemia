@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090b">
+<title>Cupa Boemia 9-Ball — Ediția 4</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+<div class="brand"><span class="ball">9</span><div><b>CUPA BOEMIA</b><small>9-BALL • EDIȚIA 4</small></div></div>
+<nav><a href="#acasa">Acasă</a><a href="#grupe">Grupe</a><a href="#playoff">Playoff</a><a href="#top8">Top 8</a></nav>
+</header>
+<main id="acasa">
+<section class="hero">
+<div class="eyebrow">TURNeu DE BILIARD • 9-BALL</div>
+<h1>Cupa Boemia<br><span>Ediția 4</span></h1>
+<p>Grupe, clasamente, rezultate și traseul către Top 8 — într-un singur loc.</p>
+<div class="hero-actions"><a class="btn primary" href="#grupe">Vezi grupele</a><a class="btn" href="#playoff">Vezi playoff</a></div>
+</section>
+<section class="stats">
+<div><strong>29</strong><span>Jucători</span></div><div><strong>5</strong><span>Grupe</span></div><div><strong>61</strong><span>Meciuri în grupe</span></div><div><strong>8</strong><span>Playoff</span></div>
+</section>
+<section id="grupe" class="section">
+<div class="section-head"><div><span class="eyebrow">FAZA 1</span><h2>Grupe</h2></div><p>Round-robin. Clasamentul se actualizează din rezultate.</p></div>
+<div id="groups" class="groups"></div>
+</section>
+<section id="playoff" class="section dark-section">
+<div class="section-head"><div><span class="eyebrow">FAZA 2</span><h2>Playoff 8 → 4 → 2</h2></div><p>Locurile 2 și 3 din grupele B–E intră în playoff.</p></div>
+<div class="bracket" id="playoffBracket"></div>
+</section>
+<section id="top8" class="section">
+<div class="section-head"><div><span class="eyebrow">FAZA FINALĂ</span><h2>Top 8</h2></div><p>6 calificați direct + cei 2 câștigători ai playoff-ului.</p></div>
+<div id="top8Bracket" class="bracket light"></div>
+</section>
+<section class="section">
+<div class="section-head"><div><span class="eyebrow">REZULTATE</span><h2>Meciuri recente</h2></div></div>
+<div id="recentMatches" class="matches"></div>
+</section>
+</main>
+<footer><b>Cupa Boemia 9-Ball</b><span>Ediția 4 • Bistrița</span></footer>
+<script src="app.js"></script>
+</body></html>
