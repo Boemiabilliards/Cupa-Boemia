@@ -3,12 +3,8 @@
 // 9-BALL + 8-BALL
 // ======================================================
 
-
-// ------------------------------------------------------
-// SUPABASE
-// ------------------------------------------------------
-
-const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
+const SUPABASE_URL =
+  "https://huxfvsjfgkbvzncgqjyl.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_mVu4zRZY5-7Ay7n7Uqk1A_4BRk_AgA";
@@ -19,12 +15,11 @@ const db = window.supabase.createClient(
 );
 
 
-// ------------------------------------------------------
+// ======================================================
 // JUCĂTORI
-// ------------------------------------------------------
+// ======================================================
 
 const GROUPS = {
-
   A: [
     "Alexa Mihai",
     "Nicu Hoha",
@@ -66,50 +61,36 @@ const GROUPS = {
     "Sergiu Moisa",
     "Gigi Ghile"
   ]
-
 };
 
 
-// ------------------------------------------------------
+// ======================================================
 // DISCIPLINA
-// ------------------------------------------------------
-
-// Dacă pagina are:
-// <body data-discipline="8ball">
-// atunci afișează 8-Ball.
-//
-// Dacă nu există atributul, folosim 9-Ball.
+// ======================================================
 
 const DISCIPLINE =
   document.body.dataset.discipline || "9ball";
 
 
-// ------------------------------------------------------
-// NUME DISCIPLINĂ
-// ------------------------------------------------------
-
 function disciplineName() {
-
-  if (DISCIPLINE === "8ball") {
-    return "8-BALL";
-  }
-
-  return "9-BALL";
+  return DISCIPLINE === "8ball"
+    ? "8-BALL"
+    : "9-BALL";
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // FORMULAR ADMIN
-// ------------------------------------------------------
+// ======================================================
 
 function setupScoreForm() {
 
-  const form = document.getElementById("scoreForm");
+  const form =
+    document.getElementById("scoreForm");
 
   if (!form) {
     return;
   }
-
 
   const disciplineSelect =
     document.getElementById("scoreDiscipline");
@@ -133,19 +114,21 @@ function setupScoreForm() {
     document.getElementById("scoreMessage");
 
 
-  // ----------------------------------------------------
-  // GRUPE
-  // ----------------------------------------------------
+  // ------------------------------
+  // SCHIMBARE GRUPĂ
+  // ------------------------------
 
   groupSelect.addEventListener("change", () => {
 
-    const group = groupSelect.value;
+    const group =
+      groupSelect.value;
 
     player1Select.innerHTML =
       '<option value="">Alege jucătorul</option>';
 
     player2Select.innerHTML =
       '<option value="">Alege jucătorul</option>';
+
 
     if (!group || !GROUPS[group]) {
       return;
@@ -176,9 +159,9 @@ function setupScoreForm() {
   });
 
 
-  // ----------------------------------------------------
+  // ------------------------------
   // SALVARE REZULTAT
-  // ----------------------------------------------------
+  // ------------------------------
 
   form.addEventListener("submit", async event => {
 
@@ -204,42 +187,30 @@ function setupScoreForm() {
       Number(score2Input.value);
 
 
-    // -----------------------------------------------
-    // VALIDĂRI
-    // -----------------------------------------------
-
     if (!discipline) {
-
       message.textContent =
         "Alege disciplina.";
-
       return;
     }
 
 
     if (!group) {
-
       message.textContent =
         "Alege grupa.";
-
       return;
     }
 
 
     if (!player1 || !player2) {
-
       message.textContent =
         "Alege ambii jucători.";
-
       return;
     }
 
 
     if (player1 === player2) {
-
       message.textContent =
         "Un jucător nu poate juca împotriva lui însuși.";
-
       return;
     }
 
@@ -250,57 +221,41 @@ function setupScoreForm() {
       score2 < 0 ||
       score2 > 6
     ) {
-
       message.textContent =
         "Scorul trebuie să fie între 0 și 6.";
-
       return;
     }
 
 
     if (score1 === score2) {
-
       message.textContent =
         "Un meci nu poate fi egal.";
-
       return;
     }
 
 
     if (score1 !== 6 && score2 !== 6) {
-
       message.textContent =
         "Unul dintre jucători trebuie să aibă 6.";
-
       return;
     }
 
-
-    // -----------------------------------------------
-    // SALVARE ÎN SUPABASE
-    // -----------------------------------------------
 
     message.textContent =
       "Se salvează...";
 
 
-    const { error } = await db
-      .from("matches")
-      .insert({
-
-        discipline: discipline,
-
-        group_name: group,
-
-        player1: player1,
-
-        player2: player2,
-
-        score1: score1,
-
-        score2: score2
-
-      });
+    const { error } =
+      await db
+        .from("matches")
+        .insert({
+          discipline: discipline,
+          group_name: group,
+          player1: player1,
+          player2: player2,
+          score1: score1,
+          score2: score2
+        });
 
 
     if (error) {
@@ -308,7 +263,8 @@ function setupScoreForm() {
       console.error(error);
 
       message.textContent =
-        "Eroare la salvare: " + error.message;
+        "Eroare la salvare: " +
+        error.message;
 
       return;
     }
@@ -318,13 +274,9 @@ function setupScoreForm() {
       `Rezultat salvat: ${player1} ${score1}–${score2} ${player2} (${disciplineName()})`;
 
 
-    // resetăm scorurile
-
     score1Input.value = "";
     score2Input.value = "";
 
-
-    // reîncărcăm rezultatele
 
     await loadMatches();
 
@@ -333,19 +285,20 @@ function setupScoreForm() {
 }
 
 
-// ------------------------------------------------------
-// ÎNCARCĂ MECIURILE
-// ------------------------------------------------------
+// ======================================================
+// ÎNCĂRCARE MECIURI
+// ======================================================
 
 async function loadMatches() {
 
-  const { data, error } = await db
-    .from("matches")
-    .select("*")
-    .eq("discipline", DISCIPLINE)
-    .order("created_at", {
-      ascending: false
-    });
+  const { data, error } =
+    await db
+      .from("matches")
+      .select("*")
+      .eq("discipline", DISCIPLINE)
+      .order("created_at", {
+        ascending: false
+      });
 
 
   if (error) {
@@ -355,11 +308,22 @@ async function loadMatches() {
       error
     );
 
+    // Chiar dacă Supabase are o problemă,
+    // afișăm grupele goale cu toți jucătorii.
+    renderGroups([]);
+
+    renderRecent([]);
+
+    renderPlayoff([]);
+
+    renderTop8([]);
+
     return;
   }
 
 
-  window.allMatches = data || [];
+  window.allMatches =
+    data || [];
 
 
   renderGroups(window.allMatches);
@@ -369,12 +333,13 @@ async function loadMatches() {
   renderPlayoff(window.allMatches);
 
   renderTop8(window.allMatches);
+
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // CLASAMENT
-// ------------------------------------------------------
+// ======================================================
 
 function getStandings(group, matches) {
 
@@ -382,23 +347,19 @@ function getStandings(group, matches) {
     GROUPS[group] || [];
 
 
+  // FOARTE IMPORTANT:
+  // pornim mereu cu TOȚI jucătorii grupei
+
   const standings =
     players.map(player => ({
-
       player: player,
-
       played: 0,
-
       wins: 0,
-
       losses: 0,
-
       points: 0,
-
       racksWon: 0,
-
-      racksLost: 0
-
+      racksLost: 0,
+      diff: 0
     }));
 
 
@@ -410,12 +371,15 @@ function getStandings(group, matches) {
 
       const p1 =
         standings.find(
-          item => item.player === match.player1
+          item =>
+            item.player === match.player1
         );
+
 
       const p2 =
         standings.find(
-          item => item.player === match.player2
+          item =>
+            item.player === match.player2
         );
 
 
@@ -428,14 +392,24 @@ function getStandings(group, matches) {
       p2.played++;
 
 
-      p1.racksWon += match.score1;
-      p1.racksLost += match.score2;
+      p1.racksWon +=
+        Number(match.score1) || 0;
 
-      p2.racksWon += match.score2;
-      p2.racksLost += match.score1;
+      p1.racksLost +=
+        Number(match.score2) || 0;
 
 
-      if (match.score1 > match.score2) {
+      p2.racksWon +=
+        Number(match.score2) || 0;
+
+      p2.racksLost +=
+        Number(match.score1) || 0;
+
+
+      if (
+        Number(match.score1) >
+        Number(match.score2)
+      ) {
 
         p1.wins++;
         p2.losses++;
@@ -463,32 +437,38 @@ function getStandings(group, matches) {
   });
 
 
-  // ----------------------------------------------------
-  // ORDINE CLASAMENT
-  // ----------------------------------------------------
-
+  // Jucătorii care au meciuri sus,
+  // dar NU eliminăm niciodată jucătorii
   standings.sort((a, b) => {
 
     if (b.points !== a.points) {
       return b.points - a.points;
     }
 
+
     if (b.wins !== a.wins) {
       return b.wins - a.wins;
     }
 
-    return b.diff - a.diff;
+
+    if (b.diff !== a.diff) {
+      return b.diff - a.diff;
+    }
+
+
+    return 0;
 
   });
 
 
   return standings;
+
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // AFIȘARE GRUPE
-// ------------------------------------------------------
+// ======================================================
 
 function renderGroups(matches) {
 
@@ -521,11 +501,16 @@ function renderGroups(matches) {
 
       <div class="group-title">
 
-        <span>GRUPA ${group}</span>
+        <span>
+          GRUPA ${group}
+        </span>
 
-        <small>${disciplineName()}</small>
+        <small>
+          ${disciplineName()}
+        </small>
 
       </div>
+
 
       <div class="table-wrap">
 
@@ -553,6 +538,7 @@ function renderGroups(matches) {
 
           </thead>
 
+
           <tbody>
     `;
 
@@ -563,22 +549,36 @@ function renderGroups(matches) {
 
         <tr>
 
-          <td>${index + 1}</td>
-
           <td>
-            <strong>${player.player}</strong>
+            ${index + 1}
           </td>
 
-          <td>${player.played}</td>
-
-          <td>${player.wins}</td>
-
-          <td>${player.losses}</td>
-
-          <td>${player.diff}</td>
+          <td>
+            <strong>
+              ${player.player}
+            </strong>
+          </td>
 
           <td>
-            <strong>${player.points}</strong>
+            ${player.played}
+          </td>
+
+          <td>
+            ${player.wins}
+          </td>
+
+          <td>
+            ${player.losses}
+          </td>
+
+          <td>
+            ${player.diff}
+          </td>
+
+          <td>
+            <strong>
+              ${player.points}
+            </strong>
           </td>
 
         </tr>
@@ -599,19 +599,22 @@ function renderGroups(matches) {
     `;
 
 
-    card.innerHTML = html;
+    card.innerHTML =
+      html;
 
 
-    container.appendChild(card);
+    container.appendChild(
+      card
+    );
 
   });
 
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // REZULTATE RECENTE
-// ------------------------------------------------------
+// ======================================================
 
 function renderRecent(matches) {
 
@@ -633,6 +636,7 @@ function renderRecent(matches) {
       "<p>Nu există încă rezultate.</p>";
 
     return;
+
   }
 
 
@@ -659,7 +663,9 @@ function renderRecent(matches) {
             ${match.player1}
           </strong>
 
-          <span>vs</span>
+          <span>
+            vs
+          </span>
 
           <strong>
             ${match.player2}
@@ -679,16 +685,18 @@ function renderRecent(matches) {
       `;
 
 
-      container.appendChild(item);
+      container.appendChild(
+        item
+      );
 
     });
 
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // PLAYOFF
-// ------------------------------------------------------
+// ======================================================
 
 function renderPlayoff(matches) {
 
@@ -709,21 +717,28 @@ function renderPlayoff(matches) {
 
     <div class="bracket-round">
 
-      <h3>PLAYOFF — 8 JUCĂTORI</h3>
+      <h3>
+        PLAYOFF — 8 JUCĂTORI
+      </h3>
 
-      ${qualified.map((player, index) => `
 
-        <div class="bracket-match">
+      ${qualified.map(
+        (player, index) => `
 
-          <span>${index + 1}</span>
+          <div class="bracket-match">
 
-          <strong>
-            ${player || "În așteptare"}
-          </strong>
+            <span>
+              ${index + 1}
+            </span>
 
-        </div>
+            <strong>
+              ${player || "În așteptare"}
+            </strong>
 
-      `).join("")}
+          </div>
+
+        `
+      ).join("")}
 
     </div>
 
@@ -732,9 +747,9 @@ function renderPlayoff(matches) {
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // TOP 8
-// ------------------------------------------------------
+// ======================================================
 
 function renderTop8(matches) {
 
@@ -755,21 +770,28 @@ function renderTop8(matches) {
 
     <div class="bracket-round">
 
-      <h3>TOP 8 — ${disciplineName()}</h3>
+      <h3>
+        TOP 8 — ${disciplineName()}
+      </h3>
 
-      ${qualified.map((player, index) => `
 
-        <div class="bracket-match">
+      ${qualified.map(
+        (player, index) => `
 
-          <span>${index + 1}</span>
+          <div class="bracket-match">
 
-          <strong>
-            ${player || "În așteptare"}
-          </strong>
+            <span>
+              ${index + 1}
+            </span>
 
-        </div>
+            <strong>
+              ${player || "În așteptare"}
+            </strong>
 
-      `).join("")}
+          </div>
+
+        `
+      ).join("")}
 
     </div>
 
@@ -778,19 +800,14 @@ function renderTop8(matches) {
 }
 
 
-// ------------------------------------------------------
-// CALIFICĂRI
-// ------------------------------------------------------
+// ======================================================
+// CALIFICARE
+// ======================================================
 
 function getQualifiedPlayers(matches) {
 
   const qualified = [];
 
-
-  // ----------------------------------------------------
-  // GRUPA A
-  // Primii 2
-  // ----------------------------------------------------
 
   const groupA =
     getStandings("A", matches);
@@ -800,36 +817,39 @@ function getQualifiedPlayers(matches) {
     groupA[0]?.player || null
   );
 
+
   qualified.push(
     groupA[1]?.player || null
   );
 
 
-  // ----------------------------------------------------
-  // GRUPELE B-E
-  // ----------------------------------------------------
+  ["B", "C", "D", "E"].forEach(group => {
 
-  ["B", "C", "D", "E"]
-    .forEach(group => {
-
-      const standings =
-        getStandings(group, matches);
+    const standings =
+      getStandings(group, matches);
 
 
-      qualified.push(
-        standings[0]?.player || null
-      );
+    qualified.push(
+      standings[0]?.player || null
+    );
 
-    });
+  });
+
+
+  // Păstrăm structura de 8 poziții
+  while (qualified.length < 8) {
+    qualified.push(null);
+  }
 
 
   return qualified.slice(0, 8);
+
 }
 
 
-// ------------------------------------------------------
-// START
-// ------------------------------------------------------
+// ======================================================
+// PORNIRE
+// ======================================================
 
 setupScoreForm();
 
