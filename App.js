@@ -1,28 +1,63 @@
 const groups = {
   A: [
-    "Jucător A1",
-    "Jucător A2",
-    "Jucător A3",
-    "Jucător A4",
-    "Jucător A5",
-    "Jucător A6",
-    "Jucător A7"
+    "Alexa Mihai",
+    "Nicu Hoha",
+    "Robert Laza",
+    "Florut Adrian (Pietroi)",
+    "Oprea Mihai",
+    "Dragan Razvan",
+    "Gicu Maier"
   ],
-  B: ["Jucător B1", "Jucător B2", "Jucător B3", "Jucător B4", "Jucător B5"],
-  C: ["Jucător C1", "Jucător C2", "Jucător C3", "Jucător C4", "Jucător C5"],
-  D: ["Jucător D1", "Jucător D2", "Jucător D3", "Jucător D4", "Jucător D5"],
-  E: ["Jucător E1", "Jucător E2", "Jucător E3", "Jucător E4", "Jucător E5"]
+
+  B: [
+    "Petri Ionut",
+    "Daniel Gusețh",
+    "Pop Andrei",
+    "Iuga Darius",
+    "Rus Ovidiu"
+  ],
+
+  C: [
+    "Pop Calin",
+    "Pagu Bogdan",
+    "Gickonne",
+    "Matei Morariu",
+    "Liță Nicolae"
+  ],
+
+  D: [
+    "Șimon Daniel",
+    "Alex Rus",
+    "Vali Ulise",
+    "Cosmin Bizau",
+    "Gigi Mari"
+  ],
+
+  E: [
+    "Mare Sebastian",
+    "Bugnar Mihai",
+    "Paul Zaig",
+    "Sergiu Moisa",
+    "Gigi Ghile"
+  ]
 };
+
+
+// =========================
+// GRUPE
+// =========================
 
 document.querySelector("#groups").innerHTML =
   Object.entries(groups).map(([g, players]) => `
     <article class="group">
+
       <div class="group-title">
         <b>Grupa ${g}</b>
         <span>${players.length} jucători • Round-robin</span>
       </div>
 
       <table class="table">
+
         <thead>
           <tr>
             <th>Jucător</th>
@@ -34,94 +69,189 @@ document.querySelector("#groups").innerHTML =
         </thead>
 
         <tbody>
-          ${players.map((p, i) => `
+
+          ${players.map((player, index) => `
             <tr>
+
               <td>
-                <span class="rank">${i + 1}</span>
-                <span class="player">${p}</span>
+                <span class="rank">${index + 1}</span>
+                <span class="player">${player}</span>
               </td>
+
               <td>0</td>
               <td>0</td>
               <td>0</td>
+
               <td>
                 ${
-                  i < 2 && g === "A"
+                  index < 2 && g === "A"
                     ? '<span class="qual">—</span>'
-                    : i === 0 && g !== "A"
+                    : index === 0 && g !== "A"
                       ? '<span class="qual">→</span>'
-                      : '0'
+                      : "0"
                 }
               </td>
+
             </tr>
           `).join("")}
+
         </tbody>
+
       </table>
+
     </article>
   `).join("");
 
-function match(a, b) {
+
+// =========================
+// MECI
+// =========================
+
+function match(player1, player2) {
+
   return `
     <div class="match">
+
       <div class="row">
-        <span>${a}</span>
+        <span>${player1}</span>
         <span class="score"></span>
       </div>
+
       <div class="row">
-        <span>${b}</span>
+        <span>${player2}</span>
         <span class="score"></span>
       </div>
+
     </div>
   `;
 }
 
+
+// =========================
+// PLAYOFF
+// =========================
+
 const playoff = [
+
   [
-    ["A2", "B3"],
     ["B2", "C3"],
     ["C2", "D3"],
-    ["D2", "E3"]
+    ["D2", "E3"],
+    ["E2", "B3"]
   ],
+
   [
-    ["Câștigător 1", "Câștigător 3"],
-    ["Câștigător 2", "Câștigător 4"]
+    ["Câștigător 1", "Câștigător 2"],
+    ["Câștigător 3", "Câștigător 4"]
   ],
+
   [
     ["Câștigător SF1", "Câștigător SF2"]
   ]
+
 ];
 
+
 document.querySelector("#playoffBracket").innerHTML =
-  playoff.map((round, i) => `
+
+  playoff.map((round, index) => `
+
     <div class="round">
+
       <h3>
         ${
           [
             "SFERTURI • 8",
             "SEMIFINALE • 4",
             "FINALĂ PLAYOFF • 2"
-          ][i]
+          ][index]
         }
       </h3>
 
-      ${round.map(x => match(x[0], x[1])).join("")}
+      ${round.map(game =>
+        match(game[0], game[1])
+      ).join("")}
+
     </div>
+
   `).join("");
 
+
+// =========================
+// TOP 8
+// =========================
+
 const top8 = [
+
   [
     ["Calificat direct 1", "Câștigător playoff"],
     ["Calificat direct 4", "Calificat direct 5"]
   ],
+
   [
     ["Câștigător QF1", "Câștigător QF2"],
     ["Calificat direct 2", "Calificat direct 3"]
   ],
+
   [
     ["Finalist 1", "Finalist 2"]
   ]
+
 ];
 
+
 document.querySelector("#top8Bracket").innerHTML =
-  top8.map((round, i) => `
+
+  top8.map((round, index) => `
+
     <div class="round">
-      <h3>${["SFERTURI", "
+
+      <h3>
+        ${
+          [
+            "SFERTURI",
+            "SEMIFINALE",
+            "FINALĂ"
+          ][index]
+        }
+      </h3>
+
+      ${round.map(game =>
+        match(game[0], game[1])
+      ).join("")}
+
+    </div>
+
+  `).join("");
+
+
+// =========================
+// MECIURI RECENTE
+// =========================
+
+const recent = [
+  ["—", "—"],
+  ["—", "—"],
+  ["—", "—"]
+];
+
+
+document.querySelector("#recentMatches").innerHTML =
+
+  recent.map(game => `
+
+    <div class="match-card">
+
+      <div>
+        <b>${game[0]}</b>
+        <small> vs </small>
+        <b>${game[1]}</b>
+      </div>
+
+      <div class="score">
+        —
+      </div>
+
+    </div>
+
+  `).join("");
