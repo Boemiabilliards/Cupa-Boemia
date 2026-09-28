@@ -1,99 +1,1432 @@
-:root{--bg:#09090b;--panel:#121216;--panel2:#18181d;--text:#f6f6f4;--muted:#a1a1aa;--line:#29292f;--gold:#f5c451;--green:#5ee19a}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#0b0b0d;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}a{color:inherit;text-decoration:none}
-.topbar{position:sticky;top:0;z-index:20;height:72px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:#09090bea;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-.brand{display:flex;gap:11px;align-items:center}.brand b{display:block;font-size:13px;letter-spacing:1.5px}.brand small{color:var(--muted);font-size:9px;letter-spacing:1.5px}.ball{display:grid;place-items:center;width:35px;height:35px;border-radius:50%;background:var(--gold);color:#111;font-weight:900;box-shadow:0 0 0 3px #2b2413}
-nav{display:flex;gap:24px;font-size:13px;color:#c9c9ce}nav a:hover{color:var(--gold)}
-.hero{min-height:610px;padding:110px 7vw 90px;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(circle at 80% 25%,#3c2b0c 0,#18140b 17%,transparent 38%),linear-gradient(135deg,#0a0a0c,#111114)}
-.eyebrow{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:2.5px}.hero h1{font-size:clamp(54px,10vw,110px);line-height:.88;margin:20px 0 28px;letter-spacing:-5px}.hero h1 span{color:var(--gold)}.hero p{max-width:590px;color:#b9b9c0;font-size:18px;line-height:1.6}.hero-actions{display:flex;gap:12px;margin-top:22px}.btn{border:1px solid #3a3a40;border-radius:10px;padding:13px 20px;font-weight:750;font-size:14px;background:#151519}.btn.primary{background:var(--gold);color:#111;border-color:var(--gold)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#101014}.stats div{padding:25px 20px;text-align:center;border-right:1px solid var(--line)}.stats div:last-child{border:0}.stats strong{display:block;font-size:31px;color:var(--gold)}.stats span{color:var(--muted);font-size:12px}
-.section{padding:90px 6vw}.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:30px}.section-head h2{font-size:42px;margin:8px 0 0;letter-spacing:-2px}.section-head p{color:var(--muted);font-size:13px}
-.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.group{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}.group-title{padding:17px 18px;background:var(--panel2);display:flex;justify-content:space-between}.group-title b{font-size:18px}.group-title span{color:var(--muted);font-size:11px;padding-top:4px}.table{width:100%;border-collapse:collapse;font-size:12px}.table th{color:#73737b;font-weight:600;text-align:right;padding:9px 12px;border-bottom:1px solid var(--line)}.table th:first-child{text-align:left}.table td{padding:11px 12px;border-bottom:1px solid #202025;text-align:right}.table td:first-child{text-align:left}.rank{color:var(--muted);width:25px}.player{font-weight:700}.qual{color:var(--green);font-weight:800}
-.dark-section{background:#0f0f12}.bracket{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:center}.round{display:flex;flex-direction:column;gap:14px}.round h3{font-size:11px;letter-spacing:1.5px;color:var(--muted);margin:0 0 2px}.match{border:1px solid var(--line);border-radius:11px;background:#151519;overflow:hidden}.match .row{display:flex;justify-content:space-between;padding:12px 13px;border-bottom:1px solid var(--line);font-size:13px}.match .row:last-child{border:0}.match .score{font-weight:900;color:var(--gold)}.match .winner{font-weight:800}
-.light .match{background:#fafafa;color:#17171a;border-color:#ddd}.light .match .row{border-color:#ddd}.light .round h3{color:#777}
-.matches{display:grid;gap:10px;max-width:700px}.match-card{display:flex;justify-content:space-between;align-items:center;background:var(--panel);border:1px solid var(--line);padding:16px 18px;border-radius:11px}.match-card small{color:var(--muted)}.match-card .score{font-size:20px;color:var(--gold);font-weight:900}
-footer{padding:35px 6vw;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:12px}footer b{color:#eee}
-@media(max-width:700px){nav{display:none}.topbar{padding:0 18px}.hero{min-height:540px;padding:80px 22px}.hero h1{font-size:60px;letter-spacing:-3px}.section{padding:65px 18px}.section-head{display:block}.section-head p{margin-top:10px}.stats{grid-template-columns:repeat(2,1fr)}.stats div:nth-child(2){border-right:0}.bracket{grid-template-columns:1fr}.section-head h2{font-size:35px}}
-/* =========================
-   FORMULAR SCOR
-========================= */
+/* =====================================================
+   CUPA BOEMIA — STYLE.CSS
+   9-BALL + 8-BALL
+===================================================== */
 
-.score-section {
-  background: #0d0d10;
-  border-top: 1px solid var(--line);
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: #09090b;
+  color: #f6f6f4;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+
+/* =====================================================
+   VARIABLES — 9 BALL
+===================================================== */
+
+body.discipline-9ball {
+  --bg: #08090b;
+  --panel: #111318;
+  --panel2: #181b21;
+  --text: #f7f7f4;
+  --muted: #989ca5;
+  --line: #292d35;
+  --accent: #f5c451;
+  --accent2: #fff0b0;
+  --success: #5ee19a;
+}
+
+
+/* =====================================================
+   VARIABLES — 8 BALL
+===================================================== */
+
+body.discipline-8ball {
+  --bg: #06100b;
+  --panel: #0c1b13;
+  --panel2: #12251a;
+  --text: #f4f0df;
+  --muted: #a5ad9f;
+  --line: #263d2d;
+  --accent: #63d48a;
+  --accent2: #d8f5df;
+  --success: #75e6a0;
+}
+
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+body.discipline-9ball,
+body.discipline-8ball {
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(255,255,255,.06),
+      transparent 35%
+    ),
+    var(--bg);
+}
+
+body.discipline-8ball {
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar {
+  min-height: 76px;
+  padding: 0 5vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background: rgba(8,9,11,.88);
+  backdrop-filter: blur(18px);
+
   border-bottom: 1px solid var(--line);
 }
 
-.score-form {
-  max-width: 900px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  background: var(--panel);
+.discipline-8ball .topbar {
+  background: rgba(6,16,11,.9);
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand b {
+  display: block;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.brand small {
+  display: block;
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   BALL
+===================================================== */
+
+.ball,
+.discipline-ball {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-weight: 900;
+  font-size: 20px;
+
+  box-shadow:
+    inset -5px -7px 12px rgba(0,0,0,.4),
+    inset 4px 4px 8px rgba(255,255,255,.25),
+    0 8px 25px rgba(0,0,0,.35);
+}
+
+.discipline-9ball .ball {
+  background: linear-gradient(
+    145deg,
+    #fff 0 30%,
+    #f4c442 31% 72%,
+    #d89c16 73%
+  );
+
+  color: #111;
+}
+
+.ball-8 {
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #555,
+      #151515 45%,
+      #020202 100%
+    );
+
+  color: white;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+nav a {
+  color: var(--muted);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  transition:
+    color .2s ease,
+    transform .2s ease;
+}
+
+nav a:hover {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+main {
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+  min-height: 620px;
+
+  padding: 120px 8vw 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  position: relative;
+
+  background:
+    radial-gradient(
+      circle at 80% 35%,
+      rgba(245,196,81,.13),
+      transparent 28%
+    );
+}
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 380px;
+  height: 380px;
+
+  right: -100px;
+  top: 100px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 0 0 40px rgba(255,255,255,.015),
+    0 0 0 80px rgba(255,255,255,.01);
+
+  pointer-events: none;
+}
+
+.discipline-8ball .hero {
+  background:
+    radial-gradient(
+      circle at 80% 35%,
+      rgba(99,212,138,.13),
+      transparent 30%
+    );
+}
+
+
+/* =====================================================
+   EYEBROW
+===================================================== */
+
+.eyebrow {
+  color: var(--accent);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 3px;
+
+  margin-bottom: 18px;
+}
+
+
+/* =====================================================
+   HERO TITLE
+===================================================== */
+
+.hero h1 {
+  font-size: clamp(70px, 11vw, 150px);
+
+  line-height: .82;
+
+  letter-spacing: -5px;
+
+  font-weight: 900;
+}
+
+.hero h1 span {
+  color: var(--accent);
+}
+
+.discipline-8ball .hero h1 {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-weight: 400;
+
+  letter-spacing: -3px;
+
+  line-height: .9;
+}
+
+.discipline-8ball .hero h1 span {
+  color: var(--accent);
+}
+
+
+/* =====================================================
+   8 BALL TITLE
+===================================================== */
+
+.discipline-title-8 {
+  margin-top: 28px;
+
+  padding: 9px 18px;
+
+  border: 1px solid var(--accent);
+
+  color: var(--accent);
+
+  font-size: 14px;
+  font-weight: 800;
+
+  letter-spacing: 5px;
+
+  background: rgba(99,212,138,.05);
+}
+
+
+/* =====================================================
+   HERO TEXT
+===================================================== */
+
+.hero p {
+  margin-top: 28px;
+
+  color: var(--muted);
+
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+
+  margin-top: 32px;
+}
+
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+
+  padding: 0 22px;
+
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 20px;
+
+  border-radius: 6px;
+
+  color: var(--text);
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #09090b;
+}
+
+.discipline-8ball .btn.primary {
+  color: #06100b;
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+
+  background: rgba(255,255,255,.015);
+}
+
+.stats > div {
+  min-height: 130px;
+
+  padding: 25px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  border-right: 1px solid var(--line);
+}
+
+.stats > div:last-child {
+  border-right: none;
+}
+
+.stats strong {
+  font-size: 38px;
+  line-height: 1;
+
+  color: var(--accent);
+}
+
+.stats span {
+  margin-top: 9px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+.section {
+  padding: 100px 7vw;
+}
+
+.section.light {
+  background: #eeeeeb;
+  color: #111;
+}
+
+.discipline-8ball .section.light {
+  background: #edf2ec;
+  color: #101710;
+}
+
+.dark-section {
+  background:
+    linear-gradient(
+      145deg,
+      #101217,
+      #08090b
+    );
+}
+
+.discipline-8ball .dark-section {
+  background:
+    linear-gradient(
+      145deg,
+      #102117,
+      #06100b
+    );
+}
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
+
+.section-head {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 40px;
+
+  margin-bottom: 45px;
+}
+
+.section-head h2 {
+  font-size: clamp(40px, 6vw, 72px);
+
+  line-height: .9;
+
+  letter-spacing: -2px;
+}
+
+.discipline-8ball .section-head h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-weight: 400;
+
+  letter-spacing: 0;
+}
+
+.section-head p {
+  max-width: 420px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   GROUPS
+===================================================== */
+
+.groups {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.group-card {
+  background: var(--panel);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-4px);
+
+  border-color: var(--accent);
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.2);
+}
+
+.group-title {
+  min-height: 70px;
+
+  padding: 0 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: var(--panel2);
+
+  border-bottom: 1px solid var(--line);
+}
+
+.group-title span {
+  font-size: 18px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.group-title small {
+  color: var(--accent);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 13px;
+}
+
+th {
+  padding: 13px 12px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+
+  letter-spacing: 1.5px;
+
+  text-align: center;
+}
+
+th:nth-child(2) {
+  text-align: left;
+}
+
+td {
+  padding: 14px 12px;
+
+  border-top: 1px solid var(--line);
+
+  text-align: center;
+}
+
+td:nth-child(2) {
+  text-align: left;
+}
+
+td strong {
+  font-weight: 800;
+}
+
+tbody tr {
+  transition: background .15s ease;
+}
+
+tbody tr:hover {
+  background: rgba(255,255,255,.035);
+}
+
+tbody tr:first-child td:first-child {
+  color: var(--accent);
+  font-weight: 900;
+}
+
+
+/* =====================================================
+   BRACKET
+===================================================== */
+
+.bracket {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(150px, 1fr));
+
+  gap: 16px;
+}
+
+.bracket-round {
+  min-width: 0;
+}
+
+.bracket-round h3 {
+  margin-bottom: 12px;
+
+  color: var(--accent);
+
+  font-size: 11px;
+
+  letter-spacing: 2px;
+}
+
+.bracket-match {
+  min-height: 66px;
+
+  margin-bottom: 10px;
+
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 7px;
+
+  background: var(--panel);
+
+  transition:
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+.bracket-match:hover {
+  border-color: var(--accent);
+  transform: translateX(3px);
+}
+
+.bracket-match span {
+  color: var(--accent);
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.bracket-match strong {
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   MATCHES
+===================================================== */
+
+.matches {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  max-width: 900px;
+}
+
+.match-item {
+  min-height: 70px;
+
+  padding: 14px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid var(--line);
+
+  border-radius: 8px;
+
+  background: var(--panel);
+
+  transition:
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+.match-item:hover {
+  border-color: var(--accent);
+  transform: translateX(3px);
+}
+
+.match-item > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+.match-item small {
+  width: 100%;
+
+  color: var(--accent);
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.match-item strong {
+  font-size: 13px;
+}
+
+.match-item span {
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.match-score {
+  color: var(--accent);
+
+  font-size: 22px;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   ADMIN FORM
+===================================================== */
+
+.score-form {
+  max-width: 700px;
+
+  padding: 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  background: var(--panel);
+
+  border: 1px solid var(--line);
+
+  border-radius: 12px;
 }
 
 .score-form label {
   display: flex;
   flex-direction: column;
+
   gap: 7px;
+
   color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .5px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
 }
 
 .score-form select,
 .score-form input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #33333a;
-  border-radius: 9px;
-  background: #0b0b0e;
+
+  min-height: 46px;
+
+  padding: 0 13px;
+
   color: var(--text);
-  font: inherit;
+
+  background: var(--panel2);
+
+  border: 1px solid var(--line);
+
+  border-radius: 6px;
+
+  outline: none;
 }
 
 .score-form select:focus,
 .score-form input:focus {
-  outline: none;
-  border-color: var(--gold);
+  border-color: var(--accent);
+}
+
+.score-inputs {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 14px;
 }
 
 .score-form button {
-  margin-top: 20px;
+  margin-top: 8px;
   cursor: pointer;
+  border: none;
 }
 
-.score-message {
-  grid-column: 1 / -1;
+#scoreMessage {
   min-height: 20px;
-  font-size: 13px;
+
+  color: var(--accent);
+
+  font-size: 12px;
   font-weight: 700;
 }
 
-.score-message.ok {
-  color: var(--green);
+
+/* =====================================================
+   PORTAL
+===================================================== */
+
+body.portal {
+  --bg: #09090b;
+  --text: #f6f6f4;
+  --muted: #9b9da3;
+  --line: #292b30;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(245,196,81,.09),
+      transparent 35%
+    ),
+    #09090b;
 }
 
-.score-message.err {
-  color: #ff7b7b;
+.portal .topbar {
+  position: relative;
+}
+
+.portal-hero {
+  min-height: 420px;
+
+  padding: 100px 8vw 60px;
+
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-hero h1 {
+  font-size: clamp(65px, 11vw, 140px);
+
+  line-height: .8;
+
+  letter-spacing: -5px;
+}
+
+.portal-hero h1 span {
+  color: #f5c451;
+}
+
+.portal-hero p {
+  margin-top: 28px;
+
+  color: var(--muted);
+
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 
-/* =========================
+/* =====================================================
+   DISCIPLINE CARDS
+===================================================== */
+
+.disciplines {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 30px 6vw 110px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 24px;
+}
+
+.discipline-card {
+  min-height: 330px;
+
+  padding: 38px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 30px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  border: 1px solid;
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.discipline-card:hover {
+  transform: translateY(-7px);
+}
+
+.card-9ball {
+  border-color: #5c4b21;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(245,196,81,.18),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #161719,
+      #0b0c0e
+    );
+}
+
+.card-9ball:hover {
+  box-shadow:
+    0 25px 70px rgba(245,196,81,.12);
+}
+
+.card-8ball {
+  border-color: #285b3b;
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(99,212,138,.16),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #102118,
+      #07100b
+    );
+}
+
+.card-8ball:hover {
+  box-shadow:
+    0 25px 70px rgba(99,212,138,.12);
+}
+
+
+/* =====================================================
+   PORTAL BALLS
+===================================================== */
+
+.discipline-card .discipline-ball {
+  flex: 0 0 auto;
+
+  width: 100px;
+  height: 100px;
+
+  font-size: 42px;
+}
+
+.card-9ball .discipline-ball {
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      #fff,
+      #fff 20%,
+      #e8b82e 21%,
+      #c89213 65%,
+      #8c640c
+    );
+
+  color: #111;
+}
+
+.card-8ball .discipline-ball {
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      #666,
+      #222 40%,
+      #050505 100%
+    );
+
+  color: #fff;
+
+  box-shadow:
+    inset -12px -15px 25px rgba(0,0,0,.65),
+    inset 8px 8px 15px rgba(255,255,255,.12),
+    0 15px 40px rgba(0,0,0,.5);
+}
+
+
+/* =====================================================
+   PORTAL CARD TEXT
+===================================================== */
+
+.discipline-info .eyebrow {
+  margin-bottom: 8px;
+}
+
+.discipline-info h2 {
+  font-size: 48px;
+
+  letter-spacing: -2px;
+}
+
+.card-8ball .discipline-info h2 {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-size: 54px;
+
+  font-weight: 400;
+
+  letter-spacing: 0;
+}
+
+.discipline-info p {
+  margin-top: 9px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.discipline-button {
+  display: inline-block;
+
+  margin-top: 28px;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+
+  color: var(--accent);
+}
+
+
+/* =====================================================
+   8-BALL SPECIAL
+===================================================== */
+
+.discipline-8ball .stats strong {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+}
+
+.discipline-8ball .group-title span {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-size: 21px;
+
+  font-weight: 400;
+}
+
+.discipline-8ball .match-score {
+  font-family: "DM Serif Display", Georgia, serif;
+
+  font-size: 26px;
+
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+  min-height: 90px;
+
+  padding: 0 7vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-top: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  letter-spacing: 1.5px;
+}
+
+footer b {
+  color: var(--accent);
+}
+
+.footer-8ball {
+  background: #06100b;
+}
+
+
+/* =====================================================
    MOBILE
-========================= */
+===================================================== */
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
-  .score-form {
+  .topbar {
+    min-height: 65px;
+
+    padding: 0 18px;
+  }
+
+  nav {
+    display: none;
+  }
+
+
+  .hero {
+    min-height: 520px;
+
+    padding:
+      90px 25px
+      70px;
+  }
+
+
+  .hero h1 {
+    font-size: 70px;
+    letter-spacing: -3px;
+  }
+
+
+  .section {
+    padding:
+      70px 20px;
+  }
+
+
+  .section-head {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+
+  .section-head h2 {
+    font-size: 48px;
+  }
+
+
+  .stats {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+
+  .stats > div:nth-child(2) {
+    border-right: none;
+  }
+
+
+  .stats > div:nth-child(3),
+  .stats > div:nth-child(4) {
+    border-top: 1px solid var(--line);
+  }
+
+
+  .groups {
     grid-template-columns: 1fr;
   }
 
-  .score-message {
-    grid-column: auto;
+
+  .bracket {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .score-inputs {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .disciplines {
+    grid-template-columns:
+      1fr;
+
+    padding:
+      20px 20px 80px;
+  }
+
+
+  .discipline-card {
+    min-height: 280px;
+
+    padding: 28px;
+
+    gap: 22px;
+  }
+
+
+  .discipline-card .discipline-ball {
+    width: 75px;
+    height: 75px;
+
+    font-size: 30px;
+  }
+
+
+  .discipline-info h2 {
+    font-size: 38px;
+  }
+
+
+  .card-8ball .discipline-info h2 {
+    font-size: 42px;
+  }
+
+
+  .portal-hero {
+    min-height: 350px;
+
+    padding:
+      80px 20px 40px;
+  }
+
+
+  .portal-hero h1 {
+    font-size: 70px;
+
+    letter-spacing: -3px;
+  }
+
+
+  .match-item {
+    align-items: flex-end;
+  }
+
+}
+
+
+/* =====================================================
+   VERY SMALL PHONES
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .brand b {
+    font-size: 12px;
+  }
+
+  .brand small {
+    font-size: 8px;
+  }
+
+
+  .ball {
+    width: 36px;
+    height: 36px;
+
+    font-size: 17px;
+  }
+
+
+  .hero h1,
+  .portal-hero h1 {
+    font-size: 56px;
+  }
+
+
+  .hero-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+
+  .stats strong {
+    font-size: 30px;
+  }
+
+
+  .stats span {
+    font-size: 8px;
+  }
+
+
+  .discipline-card {
+    padding: 22px;
+  }
+
+
+  .discipline-card .discipline-ball {
+    width: 65px;
+    height: 65px;
+
+    font-size: 25px;
+  }
+
+
+  .discipline-info h2 {
+    font-size: 31px;
+  }
+
+
+  .card-8ball .discipline-info h2 {
+    font-size: 35px;
   }
 
 }
