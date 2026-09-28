@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Cupa Boemia — Admin</title>
 
   <link rel="stylesheet" href="style.css">
@@ -12,78 +13,150 @@
 
 <body>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="ball">9</div>
-      <div>
-        <b>CUPA BOEMIA</b>
-        <small>ADMIN • EDIȚIA 4</small>
-      </div>
+<header class="topbar">
+  <div class="brand">
+    <div class="ball">9</div>
+
+    <div>
+      <b>CUPA BOEMIA</b>
+      <small>ADMIN • EDIȚIA 4</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="index.html">← Site public</a>
+  </nav>
+</header>
+
+
+<main>
+
+<section class="section">
+
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">ADMINISTRARE</div>
+      <h2>Introdu rezultat</h2>
     </div>
 
-    <nav>
-      <a href="index.html">← Site public</a>
-    </nav>
-  </header>
+    <p>Adaugă rezultatele meciurilor în clasamentul live.</p>
+  </div>
 
-  <main>
 
-    <section class="section score-section">
+  <form id="scoreForm" class="score-form">
 
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">ADMIN</div>
-          <h2>Adaugă rezultat</h2>
-        </div>
+    <label>
+      DISCIPLINĂ
 
-        <p>Introdu aici rezultatele meciurilor.</p>
-      </div>
+      <select id="scoreDiscipline" required>
+        <option value="9ball">9-BALL</option>
+        <option value="8ball">8-BALL</option>
+      </select>
+    </label>
 
-      <form id="scoreForm" class="score-form">
 
-        <label>
-          GRUPA
-          <select id="scoreGroup" required></select>
-        </label>
+    <label>
+      GRUPĂ
 
-        <label>
-          JUCĂTOR 1
-          <select id="scorePlayer1" required></select>
-        </label>
+      <select id="scoreGroup" required>
+        <option value="">Alege grupa</option>
+        <option value="A">Grupa A</option>
+        <option value="B">Grupa B</option>
+        <option value="C">Grupa C</option>
+        <option value="D">Grupa D</option>
+        <option value="E">Grupa E</option>
+      </select>
+    </label>
 
-        <label>
-          JUCĂTOR 2
-          <select id="scorePlayer2" required></select>
-        </label>
 
-        <label>
-          SCOR JUCĂTOR 1
-          <input id="score1" type="number" min="0" max="6" required>
-        </label>
+    <label>
+      JUCĂTOR 1
 
-        <label>
-          SCOR JUCĂTOR 2
-          <input id="score2" type="number" min="0" max="6" required>
-        </label>
+      <select id="scorePlayer1" required>
+        <option value="">Alege jucătorul</option>
+      </select>
+    </label>
 
-        <button class="btn primary" type="submit">
-          Salvează rezultatul
-        </button>
 
-        <div id="scoreMessage" class="score-message"></div>
+    <label>
+      JUCĂTOR 2
 
-      </form>
+      <select id="scorePlayer2" required>
+        <option value="">Alege jucătorul</option>
+      </select>
+    </label>
 
-    </section>
 
-  </main>
+    <div class="score-inputs">
 
-  <footer>
-    <span>Cupa Boemia 9-Ball</span>
-    <b>ADMIN</b>
-  </footer>
+      <label>
+        SCOR JUCĂTOR 1
 
-  <script src="app.js"></script>
+        <input
+          id="score1"
+          type="number"
+          min="0"
+          max="6"
+          required
+        >
+      </label>
+
+
+      <label>
+        SCOR JUCĂTOR 2
+
+        <input
+          id="score2"
+          type="number"
+          min="0"
+          max="6"
+          required
+        >
+      </label>
+
+    </div>
+
+
+    <button type="submit" class="btn primary">
+      SALVEAZĂ REZULTAT
+    </button>
+
+
+    <div id="scoreMessage"></div>
+
+  </form>
+
+</section>
+
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div>
+      <div class="eyebrow">REZULTATE</div>
+      <h2>Ultimele meciuri</h2>
+    </div>
+
+  </div>
+
+  <div id="recentMatches" class="matches"></div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+  <span>Cupa Boemia</span>
+
+  <b>Ediția 4</b>
+
+</footer>
+
+
+<script src="app.js"></script>
 
 </body>
 </html>
