@@ -1,19 +1,20 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#09090b">
-<title>Cupa Boemia 9-Ball — Ediția 4</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cupa Boemia 9-Ball — Ediția 4</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
 <header class="topbar">
-
   <div class="brand">
-    <span class="ball">9</span>
+    <div class="ball">9</div>
     <div>
       <b>CUPA BOEMIA</b>
       <small>9-BALL • EDIȚIA 4</small>
@@ -22,48 +23,32 @@
 
   <nav>
     <a href="#acasa">Acasă</a>
-    <a href="#rezultat">Scor</a>
-    <a href="#grupe">Grupe</a>
+    <a href="#groups">Grupe</a>
     <a href="#playoff">Playoff</a>
     <a href="#top8">Top 8</a>
+    <a href="#recent">Rezultate</a>
   </nav>
-
 </header>
 
+<main>
 
-<main id="acasa">
+<section id="acasa" class="hero">
+  <div class="eyebrow">CAMPIONAT DE BILIARD</div>
 
-<section class="hero">
-
-  <div class="eyebrow">
-    TURNEU DE BILIARD • 9-BALL
-  </div>
-
-  <h1>
-    Cupa Boemia<br>
-    <span>Ediția 4</span>
-  </h1>
+  <h1>CUPA<br><span>BOEMIA</span></h1>
 
   <p>
-    Grupe, clasamente, rezultate și traseul către Top 8 —
-    într-un singur loc.
+    9-Ball • Ediția 4<br>
+    Grupe, playoff și clasament live.
   </p>
 
   <div class="hero-actions">
-    <a class="btn primary" href="#grupe">
-      Vezi grupele
-    </a>
-
-    <a class="btn" href="#rezultat">
-      Adaugă scor
-    </a>
+    <a class="btn primary" href="#groups">Vezi grupele</a>
+    <a class="btn" href="#playoff">Vezi playoff</a>
   </div>
-
 </section>
 
-
 <section class="stats">
-
   <div>
     <strong>27</strong>
     <span>Jucători</span>
@@ -83,262 +68,66 @@
     <strong>8</strong>
     <span>Playoff</span>
   </div>
-
 </section>
 
-
-<!-- =========================
-     ADAUGĂ SCOR
-========================= -->
-
-<section id="rezultat" class="section score-section">
-
+<section id="groups" class="section">
   <div class="section-head">
-
     <div>
-      <span class="eyebrow">
-        REZULTAT
-      </span>
-
-      <h2>
-        Adaugă scor
-      </h2>
+      <div class="eyebrow">FAZA GRUPELOR</div>
+      <h2>Grupe</h2>
     </div>
 
-    <p>
-      Rezultatul se salvează online și actualizează clasamentul.
-    </p>
-
+    <p>Clasamente actualizate după rezultatele introduse.</p>
   </div>
 
-
-  <form id="scoreForm" class="score-form">
-
-    <div>
-      <label>
-        Grupa
-
-        <select id="scoreGroup" required></select>
-      </label>
-    </div>
-
-
-    <div>
-      <label>
-        Jucător 1
-
-        <select id="scorePlayer1" required></select>
-      </label>
-    </div>
-
-
-    <div>
-      <label>
-        Jucător 2
-
-        <select id="scorePlayer2" required></select>
-      </label>
-    </div>
-
-
-    <div>
-      <label>
-        Scor jucător 1
-
-        <input
-          id="score1"
-          type="number"
-          min="0"
-          max="6"
-          placeholder="6"
-          required
-        >
-      </label>
-    </div>
-
-
-    <div>
-      <label>
-        Scor jucător 2
-
-        <input
-          id="score2"
-          type="number"
-          min="0"
-          max="6"
-          placeholder="4"
-          required
-        >
-      </label>
-    </div>
-
-
-    <button
-      class="btn primary"
-      type="submit"
-    >
-      Salvează rezultatul
-    </button>
-
-
-    <div
-      id="scoreMessage"
-      class="score-message"
-    ></div>
-
-  </form>
-
+  <div id="groupsContainer" class="groups"></div>
 </section>
 
-
-<!-- =========================
-     GRUPE
-========================= -->
-
-<section id="grupe" class="section">
-
+<section id="playoff" class="section dark-section">
   <div class="section-head">
-
     <div>
-      <span class="eyebrow">
-        FAZA 1
-      </span>
-
-      <h2>
-        Grupe
-      </h2>
+      <div class="eyebrow">FAZA FINALĂ</div>
+      <h2>Playoff</h2>
     </div>
 
-    <p>
-      Round-robin. Clasamentul se actualizează din rezultate.
-    </p>
-
+    <p>8 jucători → 4 → 2</p>
   </div>
 
-  <div
-    id="groups"
-    class="groups"
-  ></div>
-
+  <div id="playoffBracket" class="bracket"></div>
 </section>
 
-
-<!-- =========================
-     PLAYOFF
-========================= -->
-
-<section
-  id="playoff"
-  class="section dark-section"
->
-
+<section id="top8" class="section light">
   <div class="section-head">
-
     <div>
-      <span class="eyebrow">
-        FAZA 2
-      </span>
-
-      <h2>
-        Playoff 8 → 4 → 2
-      </h2>
+      <div class="eyebrow">FAZA FINALĂ</div>
+      <h2>Top 8</h2>
     </div>
 
-    <p>
-      Locurile 2 și 3 din grupele B–E intră în playoff.
-    </p>
-
+    <p>Cei 8 jucători calificați.</p>
   </div>
 
-  <div
-    class="bracket"
-    id="playoffBracket"
-  ></div>
-
+  <div id="top8Bracket" class="bracket"></div>
 </section>
 
-
-<!-- =========================
-     TOP 8
-========================= -->
-
-<section id="top8" class="section">
-
+<section id="recent" class="section">
   <div class="section-head">
-
     <div>
-      <span class="eyebrow">
-        FAZA FINALĂ
-      </span>
-
-      <h2>
-        Top 8
-      </h2>
-
+      <div class="eyebrow">LIVE</div>
+      <h2>Meciuri recente</h2>
     </div>
 
-    <p>
-      6 calificați direct + cei 2 câștigători ai playoff-ului.
-    </p>
-
+    <p>Ultimele rezultate introduse.</p>
   </div>
 
-  <div
-    id="top8Bracket"
-    class="bracket light"
-  ></div>
-
-</section>
-
-
-<!-- =========================
-     MECIURI RECENTE
-========================= -->
-
-<section class="section">
-
-  <div class="section-head">
-
-    <div>
-      <span class="eyebrow">
-        REZULTATE
-      </span>
-
-      <h2>
-        Meciuri recente
-      </h2>
-    </div>
-
-  </div>
-
-  <div
-    id="recentMatches"
-    class="matches"
-  ></div>
-
+  <div id="recentMatches" class="matches"></div>
 </section>
 
 </main>
 
-
 <footer>
-
-  <b>
-    Cupa Boemia 9-Ball
-  </b>
-
-  <span>
-    Ediția 4 • Bistrița
-  </span>
-
+  <span>Cupa Boemia 9-Ball</span>
+  <b>Ediția 4</b>
 </footer>
-
-
-<!-- SUPABASE -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- SITE -->
 
 <script src="app.js"></script>
 
