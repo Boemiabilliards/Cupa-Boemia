@@ -1515,3 +1515,86 @@ body.discipline-9ball .eyebrow::before {
   color:
     #fff;
 }
+
+/* =========================================================
+   PAGINA PRINCIPALA — 8 BALL / 9 BALL STANGA-DREAPTA
+   ========================================================= */
+
+.disciplines {
+  width: min(1100px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 30px 0 80px;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.discipline-card {
+  position: relative;
+  min-height: 300px;
+
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  padding: 35px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--line);
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.012)
+    );
+
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease;
+}
+
+.discipline-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245,196,81,.35);
+}
+
+.discipline-ball {
+  flex: 0 0 105px;
+
+  width: 105px;
+  height: 105px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      #fff 0 8%,
+      #d9dde2 9% 55%,
+      #9299a2 100%
+    );
+
+  color: #11151a;
+
+  font-size: 42px;
+  font-weight: 950;
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.4),
+    inset -10px -12px 18px rgba(0,0,0,.15);
+}
+
+.card-9ball .discipline-ball {
+  background:
+    radial-gradient(
+     
