@@ -1,6 +1,7 @@
 const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1eGZ2c2pmZ2tidnpuY2dxanlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTgzMzEsImV4cCI6MjEwNjE3NDMzMX0.knPPY953lVXXlmQWMx4Q_URR2YTnb-6o5F34_KiBTx8";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsImV4cCI6MjEwNjE3NDMzMX0.knPPY953lVXXlmQWMx4Q_URR2YTnb-6o5F34_KiBTx8";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
@@ -9,7 +10,7 @@ const db = window.supabase.createClient(
 
 
 // =====================================================
-// GRUPELE ȘI JUCĂTORII
+// GRUPE
 // =====================================================
 
 const GROUPS = {
@@ -60,7 +61,7 @@ const GROUPS = {
 
 
 // =====================================================
-// PAGINA CURENTĂ
+// PAGINA
 // =====================================================
 
 const IS_ADMIN =
@@ -96,60 +97,63 @@ function disciplineName(discipline) {
 function escapeHtml(value) {
 
   return String(value ?? "")
-    .replace(
-      /[&<>"']/g,
-      function(character) {
+    .replace(/[&<>"']/g, function(character) {
 
-        return {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[character];
 
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-
-        }[character];
-
-      }
-    );
+    });
 
 }
 
 
 // =====================================================
 // CLASAMENT
+//
+// PUNCTAJ:
+// Victorie = 1 punct
+//
+// DEPARTAJARE:
+// 1. Puncte
+// 2. % rack
+// 3. Diferență rack
+// 4. Rack-uri câștigate
+// 5. Nume
 // =====================================================
 
-function getStandings(
-  group,
-  matches = []
-) {
+function getStandings(group, matches = []) {
 
   const rows =
-    (GROUPS[group] || [])
-      .map(function(player) {
+    (GROUPS[group] || []).map(function(player) {
 
-        return {
+      return {
 
-          player: player,
+        player: player,
 
-          played: 0,
+        played: 0,
 
-          wins: 0,
+        wins: 0,
 
-          losses: 0,
+        losses: 0,
 
-          points: 0,
+        points: 0,
 
-          racksWon: 0,
+        racksWon: 0,
 
-          racksLost: 0,
+        racksLost: 0,
 
-          diff: 0
+        diff: 0,
 
-        };
+        rackPercent: 0
 
-      });
+      };
+
+    });
 
 
   matches
@@ -165,8 +169,7 @@ function getStandings(
       const player1 =
         rows.find(function(row) {
 
-          return row.player ===
-            match.player1;
+          return row.player === match.player1;
 
         });
 
@@ -174,8 +177,7 @@ function getStandings(
       const player2 =
         rows.find(function(row) {
 
-          return row.player ===
-            match.player2;
+          return row.player === match.player2;
 
         });
 
@@ -193,37 +195,34 @@ function getStandings(
 
 
       player1.played++;
-
       player2.played++;
 
 
       player1.racksWon += score1;
-
       player1.racksLost += score2;
 
 
       player2.racksWon += score2;
-
       player2.racksLost += score1;
 
 
       if (score1 > score2) {
 
         player1.wins++;
-
         player2.losses++;
 
-        player1.points += 2;
+        // VICTORIE = 1 PUNCT
+        player1.points += 1;
 
       }
 
       else if (score2 > score1) {
 
         player2.wins++;
-
         player1.losses++;
 
-        player2.points += 2;
+        // VICTORIE = 1 PUNCT
+        player2.points += 1;
 
       }
 
@@ -236,6 +235,17 @@ function getStandings(
       row.racksWon -
       row.racksLost;
 
+
+    const totalRacks =
+      row.racksWon +
+      row.racksLost;
+
+
+    row.rackPercent =
+      totalRacks > 0
+        ? (row.racksWon / totalRacks) * 100
+        : 0;
+
   });
 
 
@@ -243,14 +253,19 @@ function getStandings(
 
     return (
 
+      // 1. PUNCTE
       b.points - a.points ||
 
-      b.wins - a.wins ||
+      // 2. PROCENT RACK
+      b.rackPercent - a.rackPercent ||
 
+      // 3. DIFERENȚĂ RACK
       b.diff - a.diff ||
 
+      // 4. RACK-URI CÂȘTIGATE
       b.racksWon - a.racksWon ||
 
+      // 5. ALFABETIC
       a.player.localeCompare(
         b.player,
         "ro"
@@ -270,9 +285,7 @@ function getStandings(
 // AFIȘARE GRUPE
 // =====================================================
 
-function renderGroups(
-  matches = []
-) {
+function renderGroups(matches = []) {
 
   const container =
     document.getElementById(
@@ -325,30 +338,36 @@ function renderGroups(
 
                   <tr>
 
-                    <th>#</th>
+                    <th>LOC</th>
 
                     <th>
                       Jucător
                     </th>
 
+                    <th>M</th>
+
+                    <th>V</th>
+
+                    <th>Î</th>
+
                     <th>
-                      M
+                      RACK +
                     </th>
 
                     <th>
-                      V
+                      RACK −
                     </th>
 
                     <th>
-                      Î
+                      % RACK
                     </th>
 
                     <th>
-                      Dif.
+                      DIF.
                     </th>
 
                     <th>
-                      Pts
+                      PTS
                     </th>
 
                   </tr>
@@ -361,46 +380,84 @@ function renderGroups(
                   ${rows.map(
                     function(player, index) {
 
+                      const percent =
+                        player.rackPercent
+                          .toFixed(1) + "%";
+
+
+                      const diff =
+                        player.diff > 0
+                          ? "+" + player.diff
+                          : player.diff;
+
+
                       return `
 
                         <tr>
 
                           <td>
-                            ${index + 1}
+                            <strong>
+                              ${index + 1}
+                            </strong>
                           </td>
 
+
                           <td>
+
                             <strong>
                               ${escapeHtml(
                                 player.player
                               )}
                             </strong>
+
                           </td>
+
 
                           <td>
                             ${player.played}
                           </td>
 
+
                           <td>
                             ${player.wins}
                           </td>
+
 
                           <td>
                             ${player.losses}
                           </td>
 
-                          <td>
-                            ${
-                              player.diff > 0
-                                ? "+"
-                                : ""
-                            }${player.diff}
-                          </td>
 
                           <td>
+                            ${player.racksWon}
+                          </td>
+
+
+                          <td>
+                            ${player.racksLost}
+                          </td>
+
+
+                          <td>
+
+                            <strong>
+                              ${percent}
+                            </strong>
+
+                          </td>
+
+
+                          <td>
+                            ${diff}
+                          </td>
+
+
+                          <td>
+
                             <strong>
                               ${player.points}
                             </strong>
+
                           </td>
 
                         </tr>
@@ -428,15 +485,17 @@ function renderGroups(
 
 
 // =====================================================
-// CALIFICAȚI
+// CALIFICĂRI
+//
+// GRUPA A:
+// 1 și 2 -> TOP 8
+//
+// GRUPELE B-E:
+// 1 -> TOP 8
+// 2 și 3 -> PLAYOFF
 // =====================================================
 
-function getQualifiedPlayers(
-  matches = []
-) {
-
-  const qualified = [];
-
+function getQualifiedPlayers(matches = []) {
 
   const groupA =
     getStandings(
@@ -445,58 +504,102 @@ function getQualifiedPlayers(
     );
 
 
-  qualified.push(
-    groupA[0]?.player || null
-  );
+  const groupB =
+    getStandings(
+      "B",
+      matches
+    );
 
 
-  qualified.push(
-    groupA[1]?.player || null
-  );
+  const groupC =
+    getStandings(
+      "C",
+      matches
+    );
 
 
-  ["B", "C", "D", "E"]
-
-    .forEach(function(group) {
-
-      const standings =
-        getStandings(
-          group,
-          matches
-        );
+  const groupD =
+    getStandings(
+      "D",
+      matches
+    );
 
 
-      qualified.push(
-        standings[0]?.player || null
-      );
-
-    });
-
-
-  while (
-    qualified.length < 8
-  ) {
-
-    qualified.push(null);
-
-  }
+  const groupE =
+    getStandings(
+      "E",
+      matches
+    );
 
 
-  return qualified.slice(
-    0,
-    8
-  );
+  return {
+
+    group1First:
+      groupA[0]?.player || null,
+
+    group1Second:
+      groupA[1]?.player || null,
+
+
+    group2First:
+      groupB[0]?.player || null,
+
+    group2Second:
+      groupB[1]?.player || null,
+
+    group2Third:
+      groupB[2]?.player || null,
+
+
+    group3First:
+      groupC[0]?.player || null,
+
+    group3Second:
+      groupC[1]?.player || null,
+
+    group3Third:
+      groupC[2]?.player || null,
+
+
+    group4First:
+      groupD[0]?.player || null,
+
+    group4Second:
+      groupD[1]?.player || null,
+
+    group4Third:
+      groupD[2]?.player || null,
+
+
+    group5First:
+      groupE[0]?.player || null,
+
+    group5Second:
+      groupE[1]?.player || null,
+
+    group5Third:
+      groupE[2]?.player || null
+
+  };
 
 }
 
 
 // =====================================================
 // PLAYOFF
+//
+// M1: 2G2 vs 3G3
+// M2: 2G3 vs 3G4
+// M3: 2G4 vs 3G5
+// M4: 2G5 vs 3G2
+//
+// SF1: M1 vs M3
+// SF2: M2 vs M4
+//
+// FINALĂ: SF1 vs SF2
 // =====================================================
 
-function renderPlayoff(
-  matches = []
-) {
+function renderPlayoff(matches = []) {
 
   const container =
     document.getElementById(
@@ -509,10 +612,19 @@ function renderPlayoff(
   }
 
 
-  const qualified =
+  const q =
     getQualifiedPlayers(
       matches
     );
+
+
+  function playerName(value) {
+
+    return value
+      ? escapeHtml(value)
+      : "În așteptare";
+
+  }
 
 
   container.innerHTML = `
@@ -524,33 +636,194 @@ function renderPlayoff(
       </h3>
 
 
-      ${qualified.map(
-        function(player, index) {
+      <p style="
+        margin-bottom:20px;
+        opacity:.85;
+      ">
 
-          return `
+        Locurile 2 și 3 din grupele 2–5.
 
-            <div class="bracket-match">
+        <br>
 
-              <span>
-                ${index + 1}
-              </span>
+        Jucătorii din aceeași grupă
+        nu se pot întâlni până în finala playoff-ului.
 
-              <strong>
+      </p>
 
-                ${
-                  player
-                    ? escapeHtml(player)
-                    : "În așteptare"
-                }
 
-              </strong>
+      <!-- SFERTURI -->
 
-            </div>
+      <h4>
+        SFERTURI PLAYOFF — 8 → 4
+      </h4>
 
-          `;
 
-        }
-      ).join("")}
+      <div class="bracket-match">
+
+        <span>M1</span>
+
+        <strong>
+          ${playerName(
+            q.group2Second
+          )}
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          ${playerName(
+            q.group3Third
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>M2</span>
+
+        <strong>
+          ${playerName(
+            q.group3Second
+          )}
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          ${playerName(
+            q.group4Third
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>M3</span>
+
+        <strong>
+          ${playerName(
+            q.group4Second
+          )}
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          ${playerName(
+            q.group5Third
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>M4</span>
+
+        <strong>
+          ${playerName(
+            q.group5Second
+          )}
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          ${playerName(
+            q.group2Third
+          )}
+        </strong>
+
+      </div>
+
+
+      <!-- SEMIFINALE -->
+
+      <h4 style="
+        margin-top:30px;
+      ">
+
+        SEMIFINALE PLAYOFF — 4 → 2
+
+      </h4>
+
+
+      <div class="bracket-match">
+
+        <span>SF1</span>
+
+        <strong>
+          Câștigător M1
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          Câștigător M3
+        </strong>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>SF2</span>
+
+        <strong>
+          Câștigător M2
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          Câștigător M4
+        </strong>
+
+      </div>
+
+
+      <!-- FINALA -->
+
+      <h4 style="
+        margin-top:30px;
+      ">
+
+        FINALA PLAYOFF
+
+      </h4>
+
+
+      <div class="bracket-match">
+
+        <span>FINALĂ</span>
+
+        <strong>
+          Câștigător SF1
+        </strong>
+
+        <span>VS</span>
+
+        <strong>
+          Câștigător SF2
+        </strong>
+
+      </div>
+
+
+      <p style="
+        margin-top:20px;
+        font-weight:700;
+      ">
+
+        🏆 Cei 2 câștigători ai playoff-ului
+        se califică în TOP 8.
+
+      </p>
 
     </div>
 
@@ -561,11 +834,13 @@ function renderPlayoff(
 
 // =====================================================
 // TOP 8
+//
+// 2 din Grupa 1
+// + 4 câștigători ai grupelor 2–5
+// + 2 câștigători playoff
 // =====================================================
 
-function renderTop8(
-  matches = []
-) {
+function renderTop8(matches = []) {
 
   const container =
     document.getElementById(
@@ -578,10 +853,19 @@ function renderTop8(
   }
 
 
-  const qualified =
+  const q =
     getQualifiedPlayers(
       matches
     );
+
+
+  function playerName(value) {
+
+    return value
+      ? escapeHtml(value)
+      : "În așteptare";
+
+  }
 
 
   container.innerHTML = `
@@ -598,33 +882,159 @@ function renderTop8(
       </h3>
 
 
-      ${qualified.map(
-        function(player, index) {
+      <p style="
+        margin-bottom:20px;
+        opacity:.85;
+      ">
 
-          return `
+        Tragerea la sorți pentru piramida TOP 8
+        se face după încheierea playoff-ului.
 
-            <div class="bracket-match">
+      </p>
 
-              <span>
-                ${index + 1}
-              </span>
 
-              <strong>
+      <div class="bracket-match">
 
-                ${
-                  player
-                    ? escapeHtml(player)
-                    : "În așteptare"
-                }
+        <span>1</span>
 
-              </strong>
+        <strong>
+          ${playerName(
+            q.group1First
+          )}
+        </strong>
 
-            </div>
+        <span>
+          Grupa 1 — Locul 1
+        </span>
 
-          `;
+      </div>
 
-        }
-      ).join("")}
+
+      <div class="bracket-match">
+
+        <span>2</span>
+
+        <strong>
+          ${playerName(
+            q.group1Second
+          )}
+        </strong>
+
+        <span>
+          Grupa 1 — Locul 2
+        </span>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>3</span>
+
+        <strong>
+          ${playerName(
+            q.group2First
+          )}
+        </strong>
+
+        <span>
+          Grupa 2 — Locul 1
+        </span>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>4</span>
+
+        <strong>
+          ${playerName(
+            q.group3First
+          )}
+        </strong>
+
+        <span>
+          Grupa 3 — Locul 1
+        </span>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>5</span>
+
+        <strong>
+          ${playerName(
+            q.group4First
+          )}
+        </strong>
+
+        <span>
+          Grupa 4 — Locul 1
+        </span>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>6</span>
+
+        <strong>
+          ${playerName(
+            q.group5First
+          )}
+        </strong>
+
+        <span>
+          Grupa 5 — Locul 1
+        </span>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>7</span>
+
+        <strong>
+          Câștigător Playoff 1
+        </strong>
+
+        <span>
+          Calificat
+        </span>
+
+      </div>
+
+
+      <div class="bracket-match">
+
+        <span>8</span>
+
+        <strong>
+          Câștigător Playoff 2
+        </strong>
+
+        <span>
+          Calificat
+        </span>
+
+      </div>
+
+
+      <p style="
+        margin-top:20px;
+        font-weight:700;
+      ">
+
+        🎱 8 jucători →
+        tragere la sorți →
+        piramida finală.
+
+      </p>
 
     </div>
 
@@ -637,9 +1047,7 @@ function renderTop8(
 // MECIURI RECENTE
 // =====================================================
 
-function renderRecent(
-  matches = []
-) {
+function renderRecent(matches = []) {
 
   const container =
     document.getElementById(
@@ -680,7 +1088,6 @@ function renderRecent(
 
                 ${
                   IS_ADMIN
-
                     ? `
 
                       <strong>
@@ -690,8 +1097,8 @@ function renderRecent(
                       </strong>
 
                       •
-                    `
 
+                    `
                     : ""
                 }
 
@@ -749,9 +1156,7 @@ function renderRecent(
 // ADMIN — TOATE MECIURILE
 // =====================================================
 
-function renderAdminMatches(
-  matches = []
-) {
+function renderAdminMatches(matches = []) {
 
   const container =
     document.getElementById(
@@ -819,35 +1224,27 @@ function renderAdminMatches(
         return `
 
           <div
-
             class="match-item"
-
             style="
               align-items:center;
               gap:14px;
               flex-wrap:wrap;
             "
-
           >
 
-
             <div
-
               style="
                 flex:1;
                 min-width:220px;
               "
-
             >
 
               <small>
 
                 <strong>
-
                   ${disciplineName(
                     match.discipline
                   )}
-
                 </strong>
 
                 •
@@ -860,32 +1257,24 @@ function renderAdminMatches(
               </small>
 
 
-              <div
-                style="
-                  margin-top:5px;
-                "
-              >
+              <div style="
+                margin-top:5px;
+              ">
 
                 <strong>
-
                   ${escapeHtml(
                     match.player1 || ""
                   )}
-
                 </strong>
-
 
                 <span>
                   vs
                 </span>
 
-
                 <strong>
-
                   ${escapeHtml(
                     match.player2 || ""
                   )}
-
                 </strong>
 
               </div>
@@ -896,59 +1285,42 @@ function renderAdminMatches(
             <div class="match-score">
 
               ${Number(match.score1)}
-
               –
-
               ${Number(match.score2)}
 
             </div>
 
 
             <div
-
               style="
                 display:flex;
                 gap:8px;
                 flex-wrap:wrap;
               "
-
             >
 
               <button
-
                 type="button"
-
                 class="btn"
-
                 data-edit-match="${escapeHtml(
                   match.id
                 )}"
-
               >
-
                 EDITARE
-
               </button>
 
 
               <button
-
                 type="button"
-
                 class="btn"
-
                 data-delete-match="${escapeHtml(
                   match.id
                 )}"
-
               >
-
                 ȘTERGE
-
               </button>
 
             </div>
-
 
           </div>
 
@@ -983,9 +1355,6 @@ async function loadMatches() {
           }
         );
 
-
-    // PUBLIC:
-    // încărcăm doar disciplina paginii
 
     if (!IS_ADMIN) {
 
@@ -1024,8 +1393,6 @@ async function loadMatches() {
       matches;
 
 
-    // PAGINI PUBLICE
-
     if (!IS_ADMIN) {
 
       renderGroups(
@@ -1042,8 +1409,6 @@ async function loadMatches() {
 
     }
 
-
-    // ADMIN
 
     renderRecent(
       matches
@@ -1131,10 +1496,6 @@ function setupScoreForm() {
     );
 
 
-  // ===========================================
-  // POPULARE JUCĂTORI
-  // ===========================================
-
   function populatePlayers() {
 
     const group =
@@ -1206,15 +1567,8 @@ function setupScoreForm() {
   );
 
 
-  // IMPORTANT:
-  // populați inițial
-
   populatePlayers();
 
-
-  // ===========================================
-  // SALVARE REZULTAT
-  // ===========================================
 
   form.addEventListener(
     "submit",
@@ -1261,8 +1615,6 @@ function setupScoreForm() {
         );
 
 
-      // VALIDARE
-
       if (
         !discipline ||
         !group ||
@@ -1293,15 +1645,11 @@ function setupScoreForm() {
 
       if (
 
-        !Number.isInteger(
-          score1
-        )
+        !Number.isInteger(score1)
 
         ||
 
-        !Number.isInteger(
-          score2
-        )
+        !Number.isInteger(score2)
 
         ||
 
@@ -1363,10 +1711,6 @@ function setupScoreForm() {
         message.textContent =
           "Verific dacă meciul există deja...";
 
-
-        // =========================================
-        // VERIFICARE DUPLICAT
-        // =========================================
 
         const existing =
           await db
@@ -1442,10 +1786,6 @@ function setupScoreForm() {
         }
 
 
-        // =========================================
-        // INSERT
-        // =========================================
-
         message.textContent =
           "Se salvează rezultatul...";
 
@@ -1498,9 +1838,6 @@ function setupScoreForm() {
           "";
 
 
-        // reîncarcă imediat
-        // clasamentele și meciurile
-
         await loadMatches();
 
       }
@@ -1526,7 +1863,6 @@ function setupScoreForm() {
       }
 
     }
-
   );
 
 }
@@ -1536,9 +1872,7 @@ function setupScoreForm() {
 // EDITARE MECI
 // =====================================================
 
-async function editMatch(
-  id
-) {
+async function editMatch(id) {
 
   const match =
     (window.allMatches || [])
@@ -1714,9 +2048,7 @@ async function editMatch(
 // ȘTERGERE MECI
 // =====================================================
 
-async function deleteMatch(
-  id
-) {
+async function deleteMatch(id) {
 
   const match =
     (window.allMatches || [])
@@ -1902,14 +2234,13 @@ function setupAdmin() {
       }
 
     }
-
   );
 
 }
 
 
 // =====================================================
-// PORNIRE SITE
+// PORNIRE
 // =====================================================
 
 document.addEventListener(
