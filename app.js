@@ -1,5 +1,5 @@
-
-const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
+const SUPABASE_URL =
+  "https://huxfvsjfgkbvzncgqjyl.supabase.co";
 
 const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1eGZ2c2pmZ2tidnpuY2dxanlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTgzMzEsImV4cCI6MjEwNjE3NDMzMX0.knPPY953lVXXlmQWMx4Q_URR2YTnb-6o5F34_KiBTx8";
@@ -8,6 +8,8 @@ const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+
+
 // =====================================================
 // GRUPE
 // =====================================================
@@ -114,15 +116,14 @@ function escapeHtml(value) {
 // =====================================================
 // CLASAMENT
 //
-// PUNCTAJ:
-// Victorie = 1 punct
+// VICTORIE = 1 PUNCT
 //
 // DEPARTAJARE:
-// 1. Puncte
-// 2. % rack
-// 3. Diferență rack
-// 4. Rack-uri câștigate
-// 5. Nume
+// 1. PUNCTE
+// 2. % RACK
+// 3. DIFERENȚĂ RACK
+// 4. RACK-URI CÂȘTIGATE
+// 5. NUME
 // =====================================================
 
 function getStandings(group, matches = []) {
@@ -210,7 +211,6 @@ function getStandings(group, matches = []) {
         player1.wins++;
         player2.losses++;
 
-        // VICTORIE = 1 PUNCT
         player1.points += 1;
 
       }
@@ -220,7 +220,6 @@ function getStandings(group, matches = []) {
         player2.wins++;
         player1.losses++;
 
-        // VICTORIE = 1 PUNCT
         player2.points += 1;
 
       }
@@ -250,26 +249,34 @@ function getStandings(group, matches = []) {
 
   rows.sort(function(a, b) {
 
-    return (
+    // 1. PUNCTE
+    if (b.points !== a.points) {
+      return b.points - a.points;
+    }
 
-      // 1. PUNCTE
-      b.points - a.points ||
 
-      // 2. PROCENT RACK
-      b.rackPercent - a.rackPercent ||
+    // 2. PROCENT RACK
+    if (b.rackPercent !== a.rackPercent) {
+      return b.rackPercent - a.rackPercent;
+    }
 
-      // 3. DIFERENȚĂ RACK
-      b.diff - a.diff ||
 
-      // 4. RACK-URI CÂȘTIGATE
-      b.racksWon - a.racksWon ||
+    // 3. DIFERENȚĂ RACK
+    if (b.diff !== a.diff) {
+      return b.diff - a.diff;
+    }
 
-      // 5. ALFABETIC
-      a.player.localeCompare(
-        b.player,
-        "ro"
-      )
 
+    // 4. RACK-URI CÂȘTIGATE
+    if (b.racksWon !== a.racksWon) {
+      return b.racksWon - a.racksWon;
+    }
+
+
+    // 5. ALFABETIC
+    return a.player.localeCompare(
+      b.player,
+      "ro"
     );
 
   });
@@ -339,9 +346,7 @@ function renderGroups(matches = []) {
 
                     <th>LOC</th>
 
-                    <th>
-                      Jucător
-                    </th>
+                    <th>JUCĂTOR</th>
 
                     <th>M</th>
 
@@ -349,25 +354,15 @@ function renderGroups(matches = []) {
 
                     <th>Î</th>
 
-                    <th>
-                      RACK +
-                    </th>
+                    <th>RACK +</th>
 
-                    <th>
-                      RACK −
-                    </th>
+                    <th>RACK −</th>
 
-                    <th>
-                      % RACK
-                    </th>
+                    <th>% RACK</th>
 
-                    <th>
-                      DIF.
-                    </th>
+                    <th>DIF.</th>
 
-                    <th>
-                      PTS
-                    </th>
+                    <th>PTS</th>
 
                   </tr>
 
@@ -487,48 +482,29 @@ function renderGroups(matches = []) {
 // CALIFICĂRI
 //
 // GRUPA A:
-// 1 și 2 -> TOP 8
+// LOCUL 1 + LOCUL 2 → TOP 8
 //
 // GRUPELE B-E:
-// 1 -> TOP 8
-// 2 și 3 -> PLAYOFF
+// LOCUL 1 → TOP 8
+// LOCURILE 2 + 3 → PLAYOFF
 // =====================================================
 
 function getQualifiedPlayers(matches = []) {
 
   const groupA =
-    getStandings(
-      "A",
-      matches
-    );
-
+    getStandings("A", matches);
 
   const groupB =
-    getStandings(
-      "B",
-      matches
-    );
-
+    getStandings("B", matches);
 
   const groupC =
-    getStandings(
-      "C",
-      matches
-    );
-
+    getStandings("C", matches);
 
   const groupD =
-    getStandings(
-      "D",
-      matches
-    );
-
+    getStandings("D", matches);
 
   const groupE =
-    getStandings(
-      "E",
-      matches
-    );
+    getStandings("E", matches);
 
 
   return {
@@ -587,10 +563,10 @@ function getQualifiedPlayers(matches = []) {
 // =====================================================
 // PLAYOFF
 //
-// M1: 2G2 vs 3G3
-// M2: 2G3 vs 3G4
-// M3: 2G4 vs 3G5
-// M4: 2G5 vs 3G2
+// M1: LOC 2 GRUPA B vs LOC 3 GRUPA C
+// M2: LOC 2 GRUPA C vs LOC 3 GRUPA D
+// M3: LOC 2 GRUPA D vs LOC 3 GRUPA E
+// M4: LOC 2 GRUPA E vs LOC 3 GRUPA B
 //
 // SF1: M1 vs M3
 // SF2: M2 vs M4
@@ -612,9 +588,7 @@ function renderPlayoff(matches = []) {
 
 
   const q =
-    getQualifiedPlayers(
-      matches
-    );
+    getQualifiedPlayers(matches);
 
 
   function playerName(value) {
@@ -645,12 +619,10 @@ function renderPlayoff(matches = []) {
         <br>
 
         Jucătorii din aceeași grupă
-        nu se pot întâlni până în finala playoff-ului.
+        nu se întâlnesc până în finala playoff-ului.
 
       </p>
 
-
-      <!-- SFERTURI -->
 
       <h4>
         SFERTURI PLAYOFF — 8 → 4
@@ -741,8 +713,6 @@ function renderPlayoff(matches = []) {
       </div>
 
 
-      <!-- SEMIFINALE -->
-
       <h4 style="
         margin-top:30px;
       ">
@@ -785,8 +755,6 @@ function renderPlayoff(matches = []) {
 
       </div>
 
-
-      <!-- FINALA -->
 
       <h4 style="
         margin-top:30px;
@@ -833,10 +801,6 @@ function renderPlayoff(matches = []) {
 
 // =====================================================
 // TOP 8
-//
-// 2 din Grupa 1
-// + 4 câștigători ai grupelor 2–5
-// + 2 câștigători playoff
 // =====================================================
 
 function renderTop8(matches = []) {
@@ -853,9 +817,7 @@ function renderTop8(matches = []) {
 
 
   const q =
-    getQualifiedPlayers(
-      matches
-    );
+    getQualifiedPlayers(matches);
 
 
   function playerName(value) {
@@ -886,7 +848,8 @@ function renderTop8(matches = []) {
         opacity:.85;
       ">
 
-        Tragerea la sorți pentru piramida TOP 8
+        Cei 8 jucători calificați.
+        Tragerea la sorți pentru piramida finală
         se face după încheierea playoff-ului.
 
       </p>
@@ -1334,9 +1297,26 @@ function renderAdminMatches(matches = []) {
 
 // =====================================================
 // ÎNCĂRCARE MECIURI
+//
+// IMPORTANT:
+// GRUPELE SE AFIȘEAZĂ ÎNAINTE DE SUPABASE.
+// ASTFEL, DACĂ SUPABASE ARE O EROARE,
+// JUCĂTORII RĂMÂN VIZIBILI.
 // =====================================================
 
 async function loadMatches() {
+
+  // Afișăm imediat grupele cu toți jucătorii.
+  if (!IS_ADMIN) {
+
+    renderGroups([]);
+
+    renderPlayoff([]);
+
+    renderTop8([]);
+
+  }
+
 
   try {
 
@@ -1355,7 +1335,10 @@ async function loadMatches() {
         );
 
 
-    if (!IS_ADMIN) {
+    if (
+      !IS_ADMIN &&
+      PAGE_DISCIPLINE
+    ) {
 
       query =
         query.eq(
@@ -1378,6 +1361,18 @@ async function loadMatches() {
         "Eroare Supabase:",
         error
       );
+
+
+      // Jucătorii rămân afișați.
+      if (!IS_ADMIN) {
+
+        renderGroups([]);
+
+        renderPlayoff([]);
+
+        renderTop8([]);
+
+      }
 
       return;
 
@@ -1430,6 +1425,19 @@ async function loadMatches() {
       "Eroare la încărcarea meciurilor:",
       error
     );
+
+
+    // Chiar dacă apare o eroare neașteptată,
+    // grupele rămân afișate.
+    if (!IS_ADMIN) {
+
+      renderGroups([]);
+
+      renderPlayoff([]);
+
+      renderTop8([]);
+
+    }
 
   }
 
