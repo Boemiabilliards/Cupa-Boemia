@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1ZGYycyIsInN1cCI6Imh1eGZ2c2pmZ2tidnpuY2dxanlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTgzMzEsImV4cCI6MjEwNjE3NDMzMX0.knPPY953lVXXlmQWMx4Q_URR2YTnb-6o5F34_KiBTx8";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1eGZ2c2pmZ2tidnpuY2dxanlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTgzMzEsImV4cCI6MjEwNjE3NDMzMX0.knPPY953lVXXlmQWMx4Q_URR2YTnb-6o5F34_KiBTx8";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
@@ -9,7 +9,7 @@ const db = window.supabase.createClient(
 
 
 // =====================================================
-// GRUPELE TURNEULUI
+// GRUPE
 // =====================================================
 
 const GROUPS = {
@@ -60,23 +60,19 @@ const GROUPS = {
 
 
 // =====================================================
-// DETECTARE PAGINĂ
+// PAGINA
 // =====================================================
 
 const IS_ADMIN =
   !!document.getElementById("scoreForm");
 
 
-// =====================================================
-// DISCIPLINA PAGINII PUBLICE
-// =====================================================
-
 const PAGE_DISCIPLINE =
   document.body.dataset.discipline || null;
 
 
 // =====================================================
-// NUME DISCIPLINĂ
+// DISCIPLINĂ
 // =====================================================
 
 function disciplineName(discipline) {
@@ -98,12 +94,12 @@ function disciplineName(discipline) {
 // CLASAMENT
 // =====================================================
 
-function getStandings(group, matches) {
+function getStandings(group, matches = []) {
 
   const rows =
     (GROUPS[group] || []).map(player => ({
 
-      player: player,
+      player,
       played: 0,
       wins: 0,
       losses: 0,
@@ -115,7 +111,7 @@ function getStandings(group, matches) {
     }));
 
 
-  (matches || [])
+  matches
     .filter(m => m.group_name === group)
     .forEach(m => {
 
@@ -155,9 +151,7 @@ function getStandings(group, matches) {
         p2.losses++;
         p1.points += 2;
 
-      }
-
-      else if (s2 > s1) {
+      } else if (s2 > s1) {
 
         p2.wins++;
         p1.losses++;
@@ -168,10 +162,10 @@ function getStandings(group, matches) {
     });
 
 
-  rows.forEach(x => {
+  rows.forEach(p => {
 
-    x.diff =
-      x.racksWon - x.racksLost;
+    p.diff =
+      p.racksWon - p.racksLost;
 
   });
 
@@ -196,7 +190,7 @@ function getStandings(group, matches) {
 
 
 // =====================================================
-// AFIȘARE GRUPE
+// GRUPE
 // =====================================================
 
 function renderGroups(matches = []) {
@@ -213,125 +207,114 @@ function renderGroups(matches = []) {
 
 
   container.innerHTML =
+    Object.keys(GROUPS)
+      .map(group => {
 
-    Object.keys(GROUPS).map(group => {
-
-      const rows =
-        getStandings(
-          group,
-          matches
-        );
-
-
-      return `
-
-        <div class="group-card">
-
-          <div class="group-title">
-
-            <span>
-              GRUPA ${group}
-            </span>
-
-            <small>
-              ${disciplineName(PAGE_DISCIPLINE)}
-            </small>
-
-          </div>
+        const rows =
+          getStandings(
+            group,
+            matches
+          );
 
 
-          <div class="table-wrap">
+        return `
 
-            <table>
+          <div class="group-card">
 
-              <thead>
+            <div class="group-title">
 
-                <tr>
+              <span>
+                GRUPA ${group}
+              </span>
 
-                  <th>#</th>
-                  <th>Jucător</th>
-                  <th>M</th>
-                  <th>V</th>
-                  <th>Î</th>
-                  <th>Dif.</th>
-                  <th>Pts</th>
+              <small>
+                ${disciplineName(
+                  PAGE_DISCIPLINE
+                )}
+              </small>
 
-                </tr>
-
-              </thead>
+            </div>
 
 
-              <tbody>
+            <div class="table-wrap">
 
-                ${rows.map((p, i) => `
+              <table>
+
+                <thead>
 
                   <tr>
-
-                    <td>
-                      ${i + 1}
-                    </td>
-
-
-                    <td>
-
-                      <strong>
-                        ${escapeHtml(
-                          p.player
-                        )}
-                      </strong>
-
-                    </td>
-
-
-                    <td>
-                      ${p.played}
-                    </td>
-
-
-                    <td>
-                      ${p.wins}
-                    </td>
-
-
-                    <td>
-                      ${p.losses}
-                    </td>
-
-
-                    <td>
-
-                      ${
-                        p.diff > 0
-                          ? "+"
-                          : ""
-                      }${p.diff}
-
-                    </td>
-
-
-                    <td>
-
-                      <strong>
-                        ${p.points}
-                      </strong>
-
-                    </td>
-
+                    <th>#</th>
+                    <th>Jucător</th>
+                    <th>M</th>
+                    <th>V</th>
+                    <th>Î</th>
+                    <th>Dif.</th>
+                    <th>Pts</th>
                   </tr>
 
-                `).join("")}
+                </thead>
 
-              </tbody>
 
-            </table>
+                <tbody>
+
+                  ${rows.map((p, i) => `
+
+                    <tr>
+
+                      <td>
+                        ${i + 1}
+                      </td>
+
+                      <td>
+                        <strong>
+                          ${escapeHtml(
+                            p.player
+                          )}
+                        </strong>
+                      </td>
+
+                      <td>
+                        ${p.played}
+                      </td>
+
+                      <td>
+                        ${p.wins}
+                      </td>
+
+                      <td>
+                        ${p.losses}
+                      </td>
+
+                      <td>
+                        ${
+                          p.diff > 0
+                            ? "+"
+                            : ""
+                        }${p.diff}
+                      </td>
+
+                      <td>
+                        <strong>
+                          ${p.points}
+                        </strong>
+                      </td>
+
+                    </tr>
+
+                  `).join("")}
+
+                </tbody>
+
+              </table>
+
+            </div>
 
           </div>
 
-        </div>
+        `;
 
-      `;
-
-    }).join("");
+      })
+      .join("");
 
 }
 
@@ -344,9 +327,6 @@ function getQualifiedPlayers(matches = []) {
 
   const qualified = [];
 
-
-  // GRUPA A
-  // Locurile 1 și 2
 
   const groupA =
     getStandings(
@@ -363,9 +343,6 @@ function getQualifiedPlayers(matches = []) {
     groupA[1]?.player || null
   );
 
-
-  // GRUPELE B-E
-  // Locul 1
 
   ["B", "C", "D", "E"]
     .forEach(group => {
@@ -385,9 +362,7 @@ function getQualifiedPlayers(matches = []) {
 
 
   while (qualified.length < 8) {
-
     qualified.push(null);
-
   }
 
 
@@ -427,7 +402,6 @@ function renderPlayoff(matches = []) {
         PLAYOFF — 8 JUCĂTORI
       </h3>
 
-
       ${qualified.map((player, index) => `
 
         <div class="bracket-match">
@@ -436,15 +410,12 @@ function renderPlayoff(matches = []) {
             ${index + 1}
           </span>
 
-
           <strong>
-
             ${
               player
                 ? escapeHtml(player)
                 : "În așteptare"
             }
-
           </strong>
 
         </div>
@@ -486,9 +457,10 @@ function renderTop8(matches = []) {
     <div class="bracket-round">
 
       <h3>
-        TOP 8 — ${disciplineName(PAGE_DISCIPLINE)}
+        TOP 8 — ${disciplineName(
+          PAGE_DISCIPLINE
+        )}
       </h3>
-
 
       ${qualified.map((player, index) => `
 
@@ -498,15 +470,12 @@ function renderTop8(matches = []) {
             ${index + 1}
           </span>
 
-
           <strong>
-
             ${
               player
                 ? escapeHtml(player)
                 : "În așteptare"
             }
-
           </strong>
 
         </div>
@@ -562,7 +531,9 @@ function renderRecent(matches = []) {
               ${
                 IS_ADMIN
                   ? `<strong>${escapeHtml(
-                      disciplineName(m.discipline)
+                      disciplineName(
+                        m.discipline
+                      )
                     )}</strong> • `
                   : ""
               }
@@ -574,27 +545,20 @@ function renderRecent(matches = []) {
 
             </small>
 
-
             <strong>
-
               ${escapeHtml(
                 m.player1 || ""
               )}
-
             </strong>
-
 
             <span>
               vs
             </span>
 
-
             <strong>
-
               ${escapeHtml(
                 m.player2 || ""
               )}
-
             </strong>
 
           </div>
@@ -617,16 +581,10 @@ function renderRecent(matches = []) {
 
 
 // =====================================================
-// ÎNCĂRCARE MECIURI DIN SUPABASE
+// ÎNCĂRCARE MECIURI
 // =====================================================
 
 async function loadMatches() {
-
-  renderGroups([]);
-  renderPlayoff([]);
-  renderTop8([]);
-  renderRecent([]);
-
 
   try {
 
@@ -642,9 +600,8 @@ async function loadMatches() {
         );
 
 
-    // -------------------------------------------------
-    // PAGINI PUBLICE
-    // -------------------------------------------------
+    // Pe paginile 8-Ball / 9-Ball
+    // încărcăm DOAR disciplina respectivă.
 
     if (!IS_ADMIN) {
 
@@ -655,13 +612,6 @@ async function loadMatches() {
         );
 
     }
-
-
-    // -------------------------------------------------
-    // ADMIN
-    // -------------------------------------------------
-
-    // Admin-ul vede ambele discipline.
 
 
     const {
@@ -675,37 +625,33 @@ async function loadMatches() {
     }
 
 
-    window.allMatches =
+    const matches =
       data || [];
 
 
-    // -------------------------------------------------
-    // PAGINI PUBLICE
-    // -------------------------------------------------
+    window.allMatches =
+      matches;
+
 
     if (!IS_ADMIN) {
 
       renderGroups(
-        window.allMatches
+        matches
       );
 
       renderPlayoff(
-        window.allMatches
+        matches
       );
 
       renderTop8(
-        window.allMatches
+        matches
       );
 
     }
 
 
-    // -------------------------------------------------
-    // ADMIN
-    // -------------------------------------------------
-
     renderRecent(
-      window.allMatches
+      matches
     );
 
 
@@ -716,28 +662,13 @@ async function loadMatches() {
       error
     );
 
-
-    const message =
-      document.getElementById(
-        "scoreMessage"
-      );
-
-
-    if (message) {
-
-      message.textContent =
-        "Eroare la încărcarea rezultatelor: " +
-        error.message;
-
-    }
-
   }
 
 }
 
 
 // =====================================================
-// FORMULAR SCOR
+// FORMULAR ADMIN
 // =====================================================
 
 function setupScoreForm() {
@@ -790,7 +721,7 @@ function setupScoreForm() {
 
 
   // =========================================
-  // POPULARE JUCĂTORI
+  // JUCĂTORI
   // =========================================
 
   function populatePlayers() {
@@ -804,27 +735,25 @@ function setupScoreForm() {
 
 
     const options =
-      players.map(player => `
+      players
+        .map(player => `
 
-        <option
-          value="${escapeAttr(player)}"
-        >
+          <option
+            value="${escapeAttr(player)}"
+          >
+            ${escapeHtml(player)}
+          </option>
 
-          ${escapeHtml(player)}
-
-        </option>
-
-      `).join("");
+        `)
+        .join("");
 
 
     player1.innerHTML =
-
       '<option value="">Alege jucătorul</option>' +
       options;
 
 
     player2.innerHTML =
-
       '<option value="">Alege jucătorul</option>' +
       options;
 
@@ -841,7 +770,7 @@ function setupScoreForm() {
 
 
   // =========================================
-  // SCHIMBARE DISCIPLINĂ
+  // DISCIPLINA
   // =========================================
 
   disciplineSelect.addEventListener(
@@ -849,7 +778,6 @@ function setupScoreForm() {
     () => {
 
       message.textContent =
-
         `Disciplina selectată: ${disciplineName(
           disciplineSelect.value
         )}`;
@@ -859,7 +787,7 @@ function setupScoreForm() {
 
 
   // =========================================
-  // SALVARE REZULTAT
+  // SALVARE
   // =========================================
 
   form.addEventListener(
@@ -939,14 +867,12 @@ function setupScoreForm() {
 
 
       if (
-
         !Number.isInteger(s1) ||
         !Number.isInteger(s2) ||
         s1 < 0 ||
         s2 < 0 ||
         s1 > 6 ||
         s2 > 6
-
       ) {
 
         message.textContent =
@@ -992,42 +918,42 @@ function setupScoreForm() {
 
       let existing;
 
+
       try {
 
-        existing = await Promise.race([
+        existing =
+          await Promise.race([
 
-          db
-            .from("matches")
-            .select(
-              "discipline, group_name, player1, player2, score1, score2"
+            db
+              .from("matches")
+              .select(
+                "discipline, group_name, player1, player2, score1, score2"
+              )
+              .eq(
+                "discipline",
+                discipline
+              )
+              .eq(
+                "group_name",
+                group
+              ),
+
+            new Promise(
+              (_, reject) => {
+
+                setTimeout(
+                  () => reject(
+                    new Error(
+                      "Supabase nu a răspuns în 10 secunde."
+                    )
+                  ),
+                  10000
+                );
+
+              }
             )
-            .eq(
-              "discipline",
-              discipline
-            )
-            .eq(
-              "group_name",
-              group
-            ),
 
-          new Promise((_, reject) =>
-
-            setTimeout(
-
-              () =>
-                reject(
-                  new Error(
-                    "Supabase nu a răspuns la verificarea duplicatului în 10 secunde."
-                  )
-                ),
-
-              10000
-
-            )
-
-          )
-
-        ]);
+          ]);
 
       } catch (err) {
 
@@ -1048,4 +974,195 @@ function setupScoreForm() {
           existing.error
         );
 
-       
+        message.textContent =
+          "EROARE SUPABASE: " +
+          existing.error.message;
+
+        return;
+
+      }
+
+
+      const duplicate =
+        (existing.data || []).some(m =>
+
+          (
+            m.player1 === p1 &&
+            m.player2 === p2
+          ) ||
+
+          (
+            m.player1 === p2 &&
+            m.player2 === p1
+          )
+
+        );
+
+
+      if (duplicate) {
+
+        message.textContent =
+          `⚠️ Acest meci de ${disciplineName(
+            discipline
+          )} a fost deja introdus!`;
+
+        return;
+
+      }
+
+
+      // =====================================
+      // INSERT
+      // =====================================
+
+      message.textContent =
+        `Se salvează ${disciplineName(
+          discipline
+        )}...`;
+
+
+      let result;
+
+
+      try {
+
+        result =
+          await Promise.race([
+
+            db
+              .from("matches")
+              .insert({
+
+                discipline:
+                  discipline,
+
+                group_name:
+                  group,
+
+                player1:
+                  p1,
+
+                player2:
+                  p2,
+
+                score1:
+                  s1,
+
+                score2:
+                  s2
+
+              }),
+
+            new Promise(
+              (_, reject) => {
+
+                setTimeout(
+                  () => reject(
+                    new Error(
+                      "Supabase nu a răspuns în 10 secunde."
+                    )
+                  ),
+                  10000
+                );
+
+              }
+            )
+
+          ]);
+
+      } catch (err) {
+
+        console.error(err);
+
+        message.textContent =
+          "EROARE: " +
+          err.message;
+
+        return;
+
+      }
+
+
+      if (result.error) {
+
+        console.error(
+          result.error
+        );
+
+        message.textContent =
+          "EROARE SUPABASE: " +
+          result.error.message;
+
+        return;
+
+      }
+
+
+      // =====================================
+      // SUCCES
+      // =====================================
+
+      message.textContent =
+        `✅ ${disciplineName(
+          discipline
+        )}: ${p1} ${s1}–${s2} ${p2}`;
+
+
+      score1.value = "";
+      score2.value = "";
+
+
+      await loadMatches();
+
+    }
+
+  );
+
+}
+
+
+// =====================================================
+// PROTECȚIE HTML
+// =====================================================
+
+function escapeHtml(value) {
+
+  return String(
+    value ?? ""
+  ).replace(
+    /[&<>"']/g,
+    character => ({
+
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+
+    }[character])
+  );
+
+}
+
+
+function escapeAttr(value) {
+
+  return escapeHtml(value);
+
+}
+
+
+// =====================================================
+// PORNIRE
+// =====================================================
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    setupScoreForm();
+
+    loadMatches();
+
+  }
+);
