@@ -2,13 +2,17 @@ const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
 
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1eGZ2c2pmZ2tidnpuY2dxanlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1OTgzMzEsImV4cCI6MjEwNjE3NDMzMX0.knPPY953lVXXlmQWMx4Q_URR2YTnb-6o5F34_KiBTx8";
 
-// =====================================================
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
+
+// =====================================================
 // GRUPELE TURNEULUI
 // =====================================================
 
 const GROUPS = {
-
   A: [
     "Alexa Mihai",
     "Nicu Hoha",
@@ -50,7 +54,6 @@ const GROUPS = {
     "Sergiu Moisa",
     "Gigi Ghile"
   ]
-
 };
 
 
@@ -79,23 +82,14 @@ function disciplineName() {
 function getStandings(group, matches) {
 
   const rows = (GROUPS[group] || []).map(player => ({
-
     player: player,
-
     played: 0,
-
     wins: 0,
-
     losses: 0,
-
     points: 0,
-
     racksWon: 0,
-
     racksLost: 0,
-
     diff: 0
-
   }));
 
 
@@ -116,41 +110,30 @@ function getStandings(group, matches) {
 
 
       const s1 = Number(m.score1) || 0;
-
       const s2 = Number(m.score2) || 0;
 
 
       p1.played++;
-
       p2.played++;
 
 
       p1.racksWon += s1;
-
       p1.racksLost += s2;
 
-
       p2.racksWon += s2;
-
       p2.racksLost += s1;
 
 
       if (s1 > s2) {
 
         p1.wins++;
-
         p2.losses++;
-
         p1.points += 2;
 
-      }
-
-      else if (s2 > s1) {
+      } else if (s2 > s1) {
 
         p2.wins++;
-
         p1.losses++;
-
         p2.points += 2;
 
       }
@@ -169,13 +152,9 @@ function getStandings(group, matches) {
   rows.sort((a, b) =>
 
     b.points - a.points ||
-
     b.wins - a.wins ||
-
     b.diff - a.diff ||
-
     b.racksWon - a.racksWon ||
-
     a.player.localeCompare(
       b.player,
       "ro"
@@ -243,17 +222,11 @@ function renderGroups(matches = []) {
                 <tr>
 
                   <th>#</th>
-
                   <th>Jucător</th>
-
                   <th>M</th>
-
                   <th>V</th>
-
                   <th>Î</th>
-
                   <th>Dif.</th>
-
                   <th>Pts</th>
 
                 </tr>
@@ -358,7 +331,6 @@ function getQualifiedPlayers(matches = []) {
   qualified.push(
     groupA[0]?.player || null
   );
-
 
   qualified.push(
     groupA[1]?.player || null
@@ -615,16 +587,9 @@ function renderRecent(matches = []) {
 
 async function loadMatches() {
 
-  // IMPORTANT:
-  // Grupele se afișează IMEDIAT.
-  // Chiar dacă Supabase nu răspunde.
-
   renderGroups([]);
-
   renderPlayoff([]);
-
   renderTop8([]);
-
   renderRecent([]);
 
 
@@ -653,9 +618,7 @@ async function loadMatches() {
 
 
     if (error) {
-
       throw error;
-
     }
 
 
@@ -667,33 +630,25 @@ async function loadMatches() {
       window.allMatches
     );
 
-
     renderRecent(
       window.allMatches
     );
 
-
     renderPlayoff(
       window.allMatches
     );
-
 
     renderTop8(
       window.allMatches
     );
 
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
     console.error(
       "Eroare la încărcarea meciurilor:",
       error
     );
-
-    // NU ascundem grupele.
-    // Jucătorii rămân vizibili.
 
   }
 
@@ -722,36 +677,30 @@ function setupScoreForm() {
       "scoreDiscipline"
     );
 
-
   const groupSelect =
     document.getElementById(
       "scoreGroup"
     );
-
 
   const player1 =
     document.getElementById(
       "scorePlayer1"
     );
 
-
   const player2 =
     document.getElementById(
       "scorePlayer2"
     );
-
 
   const score1 =
     document.getElementById(
       "score1"
     );
 
-
   const score2 =
     document.getElementById(
       "score2"
     );
-
 
   const message =
     document.getElementById(
@@ -790,14 +739,12 @@ function setupScoreForm() {
     player1.innerHTML =
 
       '<option value="">Alege jucătorul</option>' +
-
       options;
 
 
     player2.innerHTML =
 
       '<option value="">Alege jucătorul</option>' +
-
       options;
 
   }
@@ -826,22 +773,17 @@ function setupScoreForm() {
       const discipline =
         disciplineSelect.value;
 
-
       const group =
         groupSelect.value;
-
 
       const p1 =
         player1.value;
 
-
       const p2 =
         player2.value;
 
-
       const s1 =
         Number(score1.value);
-
 
       const s2 =
         Number(score2.value);
@@ -939,45 +881,77 @@ function setupScoreForm() {
       // SUPABASE INSERT
       // =====================================
 
-      const {
-        error
-      } = await db
+      let result;
 
-        .from("matches")
+      try {
 
-        .insert({
+        result = await Promise.race([
 
-          discipline:
-            discipline,
+          db
+            .from("matches")
+            .insert({
 
-          group_name:
-            group,
+              discipline:
+                discipline,
 
-          player1:
-            p1,
+              group_name:
+                group,
 
-          player2:
-            p2,
+              player1:
+                p1,
 
-          score1:
-            s1,
+              player2:
+                p2,
 
-          score2:
-            s2
+              score1:
+                s1,
 
-        });
+              score2:
+                s2
 
+            }),
 
-      if (error) {
+          new Promise((_, reject) =>
 
-        console.error(
-          error
-        );
+            setTimeout(
 
+              () =>
+                reject(
+                  new Error(
+                    "Supabase nu a răspuns în 10 secunde."
+                  )
+                ),
+
+              10000
+
+            )
+
+          )
+
+        ]);
+
+      } catch (err) {
+
+        console.error(err);
 
         message.textContent =
-          "Eroare la salvare: " +
-          error.message;
+          "EROARE: " +
+          err.message;
+
+        return;
+
+      }
+
+
+      if (result.error) {
+
+        console.error(
+          result.error
+        );
+
+        message.textContent =
+          "EROARE SUPABASE: " +
+          result.error.message;
 
         return;
 
@@ -994,7 +968,6 @@ function setupScoreForm() {
 
 
       score1.value = "";
-
       score2.value = "";
 
 
