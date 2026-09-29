@@ -1714,7 +1714,129 @@ body.discipline-9ball .eyebrow::before {
   .match-item {
     flex-wrap: wrap;
   }
+/* =========================================================
+   MOBILE FIX — CUPA BOEMIA
+   ========================================================= */
 
+@media (max-width: 700px) {
+
+  /* Evită orice overflow orizontal */
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  /* HERO */
+  .hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 55px 18px 45px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+    gap: 28px !important;
+  }
+
+  /* Zona principală cu titlul */
+  .hero > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .hero h1 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+
+    font-size: clamp(48px, 15vw, 72px) !important;
+    line-height: .9 !important;
+    text-align: center !important;
+  }
+
+  .hero h1 span {
+    display: block !important;
+  }
+
+  /* Textul descriptiv din hero */
+  .hero p {
+    width: 100% !important;
+    max-width: 340px !important;
+    margin: 0 auto !important;
+
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+  }
+
+  /* Butoanele din hero */
+  .hero-actions,
+  .hero-buttons {
+    width: 100% !important;
+    max-width: 360px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .hero-actions a,
+  .hero-buttons a,
+  .hero-actions button,
+  .hero-buttons button {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Orice coloană internă a hero-ului */
+  .hero-grid,
+  .hero-content,
+  .hero-copy,
+  .hero-side {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Statistici */
+  .stats {
+    width: calc(100% - 20px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Navigarea de sus */
+  .topbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .topbar-inner,
+  .nav {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Titlurile mari */
+  .section-title,
+  .page-title {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+  }
+}
   .match-score {
     margin-left: auto;
   }
