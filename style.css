@@ -1,98 +1,29 @@
 /* =========================================================
    CUPA BOEMIA — STYLE.CSS
-   DESIGN PREMIUM / TOURNAMENT EDITION
+   EDIȚIA 4 — PREMIUM TOURNAMENT DESIGN
    ========================================================= */
 
 :root {
-  --bg: #0b0d10;
-  --bg-soft: #11151a;
-  --panel: #151a20;
-  --panel-2: #1b2128;
+  --bg: #080a0d;
+  --bg-soft: #0f1318;
+  --panel: #14191f;
+  --panel-2: #1b222a;
 
-  --text: #f4f5f7;
-  --muted: #9da5af;
+  --text: #f5f6f8;
+  --muted: #9aa3ad;
 
-  --line: rgba(255, 255, 255, 0.09);
+  --line: rgba(255,255,255,.09);
 
   --accent: #f5c451;
-  --accent-soft: rgba(245, 196, 81, 0.16);
+  --accent-light: #ffe08a;
+  --accent-soft: rgba(245,196,81,.14);
 
   --success: #62d99b;
   --danger: #ff6b6b;
 
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  --shadow: 0 20px 60px rgba(0,0,0,.38);
 
   --radius: 16px;
-}
-
-
-/* =========================================================
-   PODIUM — PRIMELE 3 POZIȚII
-   ========================================================= */
-
-.group-card tbody tr:nth-child(1) {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(212, 175, 55, 0.22),
-      rgba(212, 175, 55, 0.06),
-      transparent
-    );
-}
-
-.group-card tbody tr:nth-child(1) td:first-child {
-  color: #d4af37;
-  font-size: 17px;
-  font-weight: 950;
-}
-
-.group-card tbody tr:nth-child(1) td:nth-child(2) {
-  color: #f4d77a;
-  font-weight: 900;
-}
-
-
-.group-card tbody tr:nth-child(2) {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(192, 192, 192, 0.14),
-      rgba(192, 192, 192, 0.04),
-      transparent
-    );
-}
-
-.group-card tbody tr:nth-child(2) td:first-child {
-  color: #c0c0c0;
-  font-size: 16px;
-  font-weight: 950;
-}
-
-.group-card tbody tr:nth-child(2) td:nth-child(2) {
-  color: #e0e2e5;
-  font-weight: 850;
-}
-
-
-.group-card tbody tr:nth-child(3) {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(205, 127, 50, 0.14),
-      rgba(205, 127, 50, 0.04),
-      transparent
-    );
-}
-
-.group-card tbody tr:nth-child(3) td:first-child {
-  color: #cd7f32;
-  font-size: 16px;
-  font-weight: 950;
-}
-
-.group-card tbody tr:nth-child(3) td:nth-child(2) {
-  color: #e3d1c2;
-  font-weight: 850;
 }
 
 
@@ -110,16 +41,17 @@ html {
 
 body {
   margin: 0;
+  min-height: 100vh;
 
   background:
     radial-gradient(
-      circle at 15% 0%,
-      rgba(245, 196, 81, 0.08),
+      circle at 15% -5%,
+      rgba(245,196,81,.10),
       transparent 30%
     ),
     radial-gradient(
       circle at 90% 10%,
-      rgba(255, 255, 255, 0.035),
+      rgba(255,255,255,.035),
       transparent 25%
     ),
     var(--bg);
@@ -135,8 +67,17 @@ body {
     sans-serif;
 
   line-height: 1.5;
+}
 
-  min-height: 100vh;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
 }
 
 
@@ -150,26 +91,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #090b0e;
+  background: #07090b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #30363d;
+  background: #30363e;
   border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444c55;
-}
-
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-a {
-  color: inherit;
-  text-decoration: none;
+  background: #454d57;
 }
 
 
@@ -192,8 +123,8 @@ a {
   background:
     linear-gradient(
       180deg,
-      rgba(11, 13, 16, 0.97),
-      rgba(11, 13, 16, 0.90)
+      rgba(8,10,13,.97),
+      rgba(8,10,13,.88)
     );
 
   backdrop-filter: blur(18px);
@@ -201,7 +132,7 @@ a {
   border-bottom: 1px solid var(--line);
 
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.20);
+    0 12px 40px rgba(0,0,0,.22);
 }
 
 
@@ -216,40 +147,58 @@ a {
   align-items: center;
 
   gap: 12px;
+}
 
-  font-weight: 900;
+.brand .ball,
+.ball {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #fff 0 8%,
+      #f5c451 9% 55%,
+      #9c6d17 100%
+    );
+
+  color: #17130a;
+
+  font-size: 11px;
+  font-weight: 950;
+
+  box-shadow:
+    0 8px 25px rgba(245,196,81,.15),
+    inset -5px -6px 10px rgba(0,0,0,.2);
 }
 
 .brand b {
+  display: block;
+
   font-size: 17px;
-
   letter-spacing: 2.5px;
-
-  color: var(--text);
-
-  text-shadow:
-    0 4px 25px rgba(0, 0, 0, 0.4);
 }
 
-.brand::after {
-  content: "CUPA BOEMIA • EDIȚIA 4";
+.brand small {
+  display: block;
 
-  position: absolute;
-
-  left: 0;
-  top: 27px;
+  margin-top: 2px;
 
   color: var(--accent);
 
-  opacity: 0.75;
-
-  font-size: 7px;
-
+  font-size: 8px;
   font-weight: 900;
-
   letter-spacing: 2px;
+}
 
-  white-space: nowrap;
+.brand::after {
+  display: none;
 }
 
 
@@ -259,7 +208,6 @@ a {
 
 nav {
   display: flex;
-
   align-items: center;
 
   gap: 5px;
@@ -275,20 +223,19 @@ nav a {
   color: var(--muted);
 
   font-size: 13px;
-
-  font-weight: 700;
+  font-weight: 750;
 
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+    color .2s ease,
+    background .2s ease,
+    transform .2s ease;
 }
 
 nav a:hover {
   color: var(--text);
 
   background:
-    rgba(255, 255, 255, 0.055);
+    rgba(255,255,255,.055);
 
   transform: translateY(-1px);
 }
@@ -306,7 +253,352 @@ nav a:hover {
 
 
 /* =========================================================
-   HERO
+   EYEBROW
+   ========================================================= */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 7px 12px;
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "●";
+
+  color: var(--accent);
+
+  font-size: 7px;
+
+  text-shadow:
+    0 0 15px rgba(245,196,81,.8);
+}
+
+
+/* =========================================================
+   =========================================================
+   PAGINA PRINCIPAL — PORTAL
+   =========================================================
+   ========================================================= */
+
+body.portal {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% -15%,
+      rgba(245,196,81,.14),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 10% 50%,
+      rgba(255,255,255,.025),
+      transparent 30%
+    ),
+    var(--bg);
+}
+
+
+/* =========================================================
+   PORTAL HERO
+   ========================================================= */
+
+.portal-hero {
+  width: min(1100px, calc(100% - 36px));
+
+  margin: 0 auto;
+
+  padding: 90px 0 45px;
+
+  text-align: center;
+}
+
+.portal-hero .eyebrow {
+  margin-bottom: 20px;
+}
+
+.portal-hero h1 {
+  margin: 0;
+
+  font-size:
+    clamp(52px, 9vw, 105px);
+
+  line-height: .88;
+
+  letter-spacing: -5px;
+
+  font-weight: 950;
+
+  text-shadow:
+    0 25px 70px rgba(0,0,0,.4);
+}
+
+.portal-hero h1 span {
+  display: inline-block;
+
+  color: var(--accent);
+
+  text-shadow:
+    0 0 45px rgba(245,196,81,.10);
+}
+
+.portal-hero p {
+  margin: 25px 0 0;
+
+  color: var(--muted);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   DISCIPLINE GRID
+   ========================================================= */
+
+.disciplines {
+  width: min(1100px, calc(100% - 36px));
+
+  margin: 0 auto;
+
+  padding: 25px 0 90px;
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr)) !important;
+
+  gap: 28px;
+}
+
+
+/* =========================================================
+   DISCIPLINE CARD
+   ========================================================= */
+
+.discipline-card {
+  position: relative;
+
+  min-height: 315px;
+
+  display: flex !important;
+  align-items: center;
+
+  gap: 30px;
+
+  padding: 38px;
+
+  overflow: hidden;
+
+  border: 1px solid var(--line);
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.012)
+    );
+
+  box-shadow:
+    0 22px 65px rgba(0,0,0,.30);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.discipline-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 10% 50%,
+      rgba(245,196,81,.13),
+      transparent 38%
+    );
+}
+
+.discipline-card:hover {
+  transform: translateY(-7px);
+
+  border-color:
+    rgba(245,196,81,.40);
+
+  box-shadow:
+    0 30px 85px rgba(0,0,0,.42);
+}
+
+
+/* =========================================================
+   9 BALL / 8 BALL TOP ACCENT
+   ========================================================= */
+
+.card-9ball,
+.card-8ball {
+  border-top:
+    2px solid rgba(245,196,81,.72);
+}
+
+
+/* =========================================================
+   BILIARD BALL
+   ========================================================= */
+
+.discipline-ball {
+  position: relative;
+  z-index: 2;
+
+  flex: 0 0 108px;
+
+  width: 108px;
+  height: 108px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 31% 25%,
+      #fff 0 7%,
+      #e1e4e8 8% 53%,
+      #858c95 100%
+    );
+
+  color: #11151a;
+
+  font-size: 46px;
+
+  font-weight: 950;
+
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.45),
+    inset -12px -14px 20px rgba(0,0,0,.16),
+    inset 8px 8px 16px rgba(255,255,255,.75);
+}
+
+.card-9ball .discipline-ball {
+  background:
+    radial-gradient(
+      circle at 31% 25%,
+      #fff 0 7%,
+      #f5c451 8% 53%,
+      #ae7818 100%
+    );
+}
+
+
+/* =========================================================
+   DISCIPLINE INFO
+   ========================================================= */
+
+.discipline-info {
+  position: relative;
+
+  z-index: 3;
+
+  min-width: 0;
+}
+
+.discipline-info .eyebrow {
+  margin-bottom: 11px;
+
+  padding: 5px 10px;
+
+  font-size: 8px;
+}
+
+.discipline-info h2 {
+  margin: 0;
+
+  font-size:
+    clamp(30px, 4vw, 48px);
+
+  line-height: 1;
+
+  letter-spacing: -1.5px;
+
+  font-weight: 950;
+}
+
+.discipline-info p {
+  margin: 10px 0 23px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   DISCIPLINE BUTTON
+   ========================================================= */
+
+.discipline-button {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 11px 15px;
+
+  border:
+    1px solid rgba(245,196,81,.25);
+
+  border-radius: 9px;
+
+  background:
+    rgba(245,196,81,.06);
+
+  color: var(--accent);
+
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .5px;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+.discipline-card:hover .discipline-button {
+  background:
+    rgba(245,196,81,.12);
+
+  border-color:
+    rgba(245,196,81,.42);
+
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   GENERAL HERO — DISCIPLINE PAGES
    ========================================================= */
 
 .hero {
@@ -315,7 +607,6 @@ nav a:hover {
   min-height: 620px;
 
   display: flex;
-
   align-items: center;
 
   overflow: hidden;
@@ -334,10 +625,10 @@ nav a:hover {
   z-index: -1;
 
   color:
-    rgba(255, 255, 255, 0.025);
+    rgba(255,255,255,.025);
 
   font-size:
-    clamp(80px, 14vw, 190px);
+    clamp(80px,14vw,190px);
 
   font-weight: 950;
 
@@ -364,17 +655,12 @@ nav a:hover {
   background:
     radial-gradient(
       circle,
-      rgba(245, 196, 81, 0.12),
+      rgba(245,196,81,.12),
       transparent 68%
     );
 
   pointer-events: none;
 }
-
-
-/* =========================================================
-   HERO CONTENT
-   ========================================================= */
 
 .hero-content {
   max-width: 820px;
@@ -382,60 +668,17 @@ nav a:hover {
   padding: 80px 0;
 }
 
-.eyebrow {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 8px 14px;
-
-  border:
-    1px solid var(--line);
-
-  border-radius: 999px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
-
-  color: var(--muted);
-
-  font-size: 11px;
-
-  font-weight: 900;
-
-  letter-spacing: 1.8px;
-
-  text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: "●";
-
-  color: var(--accent);
-
-  font-size: 8px;
-
-  text-shadow:
-    0 0 15px rgba(245, 196, 81, 0.8);
-}
-
-
 .hero h1 {
   margin: 20px 0 16px;
 
   font-size:
-    clamp(44px, 7vw, 92px);
+    clamp(44px,7vw,92px);
 
-  line-height: 0.95;
+  line-height: .95;
 
   letter-spacing: -4px;
 
   font-weight: 950;
-
-  text-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
 .hero h1 span {
@@ -465,7 +708,7 @@ nav a:hover {
   padding: 10px 15px;
 
   background:
-    rgba(255, 255, 255, 0.035);
+    rgba(255,255,255,.035);
 
   color: var(--text);
 
@@ -474,20 +717,20 @@ nav a:hover {
   cursor: pointer;
 
   transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    transform .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
 
   background:
-    rgba(255, 255, 255, 0.07);
+    rgba(255,255,255,.07);
 
   border-color:
-    rgba(255, 255, 255, 0.15);
+    rgba(255,255,255,.15);
 }
 
 .btn.primary {
@@ -501,17 +744,10 @@ nav a:hover {
   color: #17130a;
 
   border-color:
-    rgba(245, 196, 81, 0.5);
+    rgba(245,196,81,.5);
 
   box-shadow:
-    0 10px 30px
-    rgba(245, 196, 81, 0.15);
-}
-
-.btn.primary:hover {
-  box-shadow:
-    0 14px 40px
-    rgba(245, 196, 81, 0.25);
+    0 10px 30px rgba(245,196,81,.15);
 }
 
 
@@ -523,7 +759,9 @@ nav a:hover {
   display: grid;
 
   grid-template-columns:
-    repeat(4, 1fr);
+    repeat(4,1fr);
+
+  overflow: hidden;
 
   border:
     1px solid var(--line);
@@ -531,13 +769,11 @@ nav a:hover {
   border-radius:
     var(--radius);
 
-  overflow: hidden;
-
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.015)
+      rgba(255,255,255,.04),
+      rgba(255,255,255,.015)
     );
 
   box-shadow:
@@ -551,29 +787,10 @@ nav a:hover {
 
   border-right:
     1px solid var(--line);
-
-  overflow: hidden;
 }
 
 .stats > div:last-child {
   border-right: 0;
-}
-
-.stats > div::after {
-  content: "";
-
-  position: absolute;
-
-  width: 120px;
-  height: 120px;
-
-  right: -60px;
-  bottom: -70px;
-
-  border-radius: 50%;
-
-  border:
-    1px solid var(--accent-soft);
 }
 
 .stats strong {
@@ -586,10 +803,6 @@ nav a:hover {
   font-size: 30px;
 
   font-weight: 950;
-
-  text-shadow:
-    0 0 30px
-    rgba(245, 196, 81, 0.15);
 }
 
 .stats span {
@@ -639,7 +852,6 @@ section {
   display: block;
 
   width: 55px;
-
   height: 3px;
 
   margin-top: 14px;
@@ -647,10 +859,6 @@ section {
   border-radius: 5px;
 
   background: var(--accent);
-
-  box-shadow:
-    0 0 20px
-    rgba(245, 196, 81, 0.25);
 }
 
 .section-head p {
@@ -668,7 +876,7 @@ section {
   display: grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(2,minmax(0,1fr));
 
   gap: 24px;
 }
@@ -681,8 +889,8 @@ section {
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.012)
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.012)
     );
 
   border:
@@ -692,24 +900,7 @@ section {
     var(--radius);
 
   box-shadow:
-    0 14px 45px
-    rgba(0, 0, 0, 0.18);
-
-  transition:
-    transform 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.group-card:hover {
-  transform: translateY(-3px);
-
-  border-color:
-    rgba(245, 196, 81, 0.22);
-
-  box-shadow:
-    0 20px 55px
-    rgba(0, 0, 0, 0.28);
+    0 14px 45px rgba(0,0,0,.18);
 }
 
 .group-card::before {
@@ -721,7 +912,6 @@ section {
   top: 0;
 
   width: 100%;
-
   height: 2px;
 
   background:
@@ -731,8 +921,6 @@ section {
       var(--accent),
       transparent
     );
-
-  opacity: 0.8;
 }
 
 
@@ -780,21 +968,15 @@ section {
 .group-title small {
   padding: 6px 10px;
 
-  border:
-    1px solid var(--line);
+  border: 1px solid var(--line);
 
   border-radius: 999px;
-
-  background:
-    rgba(255, 255, 255, 0.025);
 
   color: var(--muted);
 
   font-size: 9px;
 
   font-weight: 900;
-
-  letter-spacing: 1px;
 }
 
 
@@ -820,14 +1002,12 @@ table {
 }
 
 th {
-  padding:
-    13px 10px;
+  padding: 13px 10px;
 
   background:
-    rgba(255, 255, 255, 0.018);
+    rgba(255,255,255,.018);
 
-  color:
-    #7f8994;
+  color: #7f8994;
 
   border-bottom:
     1px solid var(--line);
@@ -836,26 +1016,22 @@ th {
 
   font-weight: 900;
 
-  letter-spacing: 0.7px;
-
   text-align: center;
 }
 
 td {
   height: 49px;
 
-  padding:
-    9px 10px;
+  padding: 9px 10px;
 
   border-bottom:
-    1px solid rgba(255, 255, 255, 0.045);
+    1px solid rgba(255,255,255,.045);
 
-  text-align: center;
-
-  color:
-    #cdd2d8;
+  color: #cdd2d8;
 
   font-size: 12px;
+
+  text-align: center;
 }
 
 td:nth-child(2) {
@@ -866,36 +1042,76 @@ td:nth-child(2) {
 
 tbody tr {
   transition:
-    background 0.2s ease;
+    background .2s ease;
 }
 
 tbody tr:hover {
-  filter: brightness(1.08);
+  background:
+    rgba(255,255,255,.025);
 }
 
 
 /* =========================================================
-   RANKING GENERAL
+   PODIUM
    ========================================================= */
 
-tbody tr:first-child td:first-child {
-  color: var(--accent);
-  font-size: 17px;
+.group-card tbody tr:nth-child(1) {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(212,175,55,.18),
+      rgba(212,175,55,.04),
+      transparent
+    );
 }
 
-tbody tr:nth-child(2) td:first-child {
-  color: #d5d7da;
+.group-card tbody tr:nth-child(1) td:first-child {
+  color: #d4af37;
+
+  font-size: 17px;
+
   font-weight: 950;
 }
 
-tbody tr:nth-child(3) td:first-child {
-  color: #c28a62;
+.group-card tbody tr:nth-child(1) td:nth-child(2) {
+  color: #f4d77a;
+
+  font-weight: 900;
+}
+
+.group-card tbody tr:nth-child(2) {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(192,192,192,.10),
+      transparent
+    );
+}
+
+.group-card tbody tr:nth-child(2) td:first-child {
+  color: #c0c0c0;
+
+  font-weight: 950;
+}
+
+.group-card tbody tr:nth-child(3) {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(205,127,50,.10),
+      transparent
+    );
+}
+
+.group-card tbody tr:nth-child(3) td:first-child {
+  color: #cd7f32;
+
   font-weight: 950;
 }
 
 
 /* =========================================================
-   PROCENTE + PUNCTE
+   PROCENTE / PUNCTE
    ========================================================= */
 
 td:nth-child(8) strong,
@@ -903,15 +1119,12 @@ td:nth-child(10) strong {
   display: inline-flex;
 
   align-items: center;
-
   justify-content: center;
 
   min-width: 55px;
-
   min-height: 28px;
 
-  padding:
-    0 8px;
+  padding: 0 8px;
 
   border:
     1px solid var(--line);
@@ -919,28 +1132,22 @@ td:nth-child(10) strong {
   border-radius: 7px;
 
   background:
-    rgba(255, 255, 255, 0.035);
-}
-
-td:nth-child(8) strong {
-  color:
-    #dce0e5;
+    rgba(255,255,255,.035);
 }
 
 td:nth-child(10) strong {
-  color:
-    var(--accent);
+  color: var(--accent);
 
   border-color:
-    rgba(245, 196, 81, 0.2);
+    rgba(245,196,81,.2);
 
   background:
-    rgba(245, 196, 81, 0.055);
+    rgba(245,196,81,.055);
 }
 
 
 /* =========================================================
-   PLAYOFF / BRACKET
+   BRACKET
    ========================================================= */
 
 .bracket,
@@ -964,33 +1171,26 @@ td:nth-child(10) strong {
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.012)
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.012)
     );
 
   box-shadow:
-    0 15px 45px
-    rgba(0, 0, 0, 0.18);
+    0 15px 45px rgba(0,0,0,.18);
 }
 
 .bracket-round h3 {
-  margin:
-    0 0 10px;
+  margin: 0 0 10px;
 
-  color:
-    var(--accent);
+  color: var(--accent);
 
   font-size: 20px;
-
-  letter-spacing: 1px;
 }
 
 .bracket-round h4 {
-  margin:
-    28px 0 13px;
+  margin: 28px 0 13px;
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
   font-size: 11px;
 
@@ -1011,11 +1211,9 @@ td:nth-child(10) strong {
 
   gap: 12px;
 
-  margin:
-    10px 0;
+  margin: 10px 0;
 
-  padding:
-    12px 15px;
+  padding: 12px 15px;
 
   border:
     1px solid var(--line);
@@ -1023,15 +1221,7 @@ td:nth-child(10) strong {
   border-radius: 11px;
 
   background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.015)
-    );
-
-  box-shadow:
-    0 8px 25px
-    rgba(0, 0, 0, 0.13);
+    rgba(255,255,255,.025);
 }
 
 .bracket-match span:first-child {
@@ -1042,7 +1232,6 @@ td:nth-child(10) strong {
   display: inline-flex;
 
   align-items: center;
-
   justify-content: center;
 
   border-radius: 8px;
@@ -1050,8 +1239,7 @@ td:nth-child(10) strong {
   background:
     var(--accent-soft);
 
-  color:
-    var(--accent);
+  color: var(--accent);
 
   font-size: 10px;
 
@@ -1100,46 +1288,23 @@ td:nth-child(10) strong {
   border-radius: 13px;
 
   background:
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.03),
-      rgba(255, 255, 255, 0.012)
-    );
-
-  box-shadow:
-    0 9px 28px
-    rgba(0, 0, 0, 0.12);
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.match-item:hover {
-  transform:
-    translateY(-2px);
-
-  border-color:
-    rgba(245, 196, 81, 0.18);
+    rgba(255,255,255,.025);
 }
 
 .match-score {
   min-width: 72px;
 
-  padding:
-    8px 12px;
+  padding: 8px 12px;
 
   border:
-    1px solid
-    rgba(245, 196, 81, 0.2);
+    1px solid rgba(245,196,81,.2);
 
   border-radius: 9px;
 
   background:
-    rgba(245, 196, 81, 0.045);
+    rgba(245,196,81,.045);
 
-  color:
-    var(--accent);
+  color: var(--accent);
 
   font-size: 17px;
 
@@ -1165,8 +1330,8 @@ td:nth-child(10) strong {
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.045),
-      rgba(255, 255, 255, 0.012)
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.012)
     );
 
   box-shadow:
@@ -1179,8 +1344,7 @@ td:nth-child(10) strong {
 
   min-height: 44px;
 
-  padding:
-    0 12px;
+  padding: 0 12px;
 
   border:
     1px solid var(--line);
@@ -1189,44 +1353,33 @@ td:nth-child(10) strong {
 
   outline: none;
 
-  background:
-    #101419;
+  background: #101419;
 
-  color:
-    var(--text);
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  color: var(--text);
 }
 
 .score-form select:focus,
 .score-form input:focus {
   border-color:
-    rgba(245, 196, 81, 0.5);
+    rgba(245,196,81,.5);
 
   box-shadow:
     0 0 0 3px
-    rgba(245, 196, 81, 0.08);
+    rgba(245,196,81,.08);
 }
 
 #scoreMessage {
   margin-top: 15px;
 
-  padding:
-    10px 12px;
+  padding: 10px 12px;
 
   border-left:
     3px solid var(--accent);
 
   background:
-    rgba(255, 255, 255, 0.025);
+    rgba(255,255,255,.025);
 
-  color:
-    var(--muted);
-
-  border-radius:
-    0 7px 7px 0;
+  color: var(--muted);
 }
 
 
@@ -1237,17 +1390,15 @@ td:nth-child(10) strong {
 footer {
   margin-top: 70px;
 
-  padding:
-    35px 20px;
+  padding: 35px 20px;
 
   border-top:
     1px solid var(--line);
 
   background:
-    rgba(0, 0, 0, 0.15);
+    rgba(0,0,0,.15);
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
   text-align: center;
 
@@ -1256,31 +1407,84 @@ footer {
 
 
 /* =========================================================
-   MOBILE
+   PREMIUM GLOW
+   ========================================================= */
+
+.group-card,
+.bracket-round,
+.score-form,
+.stats {
+  position: relative;
+}
+
+.group-card::after,
+.bracket-round::after,
+.score-form::after,
+.stats::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: inherit;
+
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.035);
+}
+
+
+/* =========================================================
+   DISCIPLINE ACCENT
+   ========================================================= */
+
+body.discipline-8ball .eyebrow::before {
+  content: "8";
+}
+
+body.discipline-9ball .eyebrow::before {
+  content: "9";
+}
+
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background:
+    rgba(245,196,81,.25);
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
 
   .topbar {
-    padding:
-      0 18px;
+    padding: 0 18px;
   }
 
   .groups {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
   .stats {
     grid-template-columns:
-      repeat(2, 1fr);
+      repeat(2,1fr);
   }
 
   .stats > div:nth-child(2) {
     border-right: 0;
   }
 
-  .stats > div:nth-child(-n + 2) {
+  .stats > div:nth-child(-n+2) {
     border-bottom:
       1px solid var(--line);
   }
@@ -1288,25 +1492,94 @@ footer {
   .hero {
     min-height: 560px;
   }
+}
 
-  .hero::before {
-    font-size: 70px;
 
-    right: -20px;
+/* =========================================================
+   RESPONSIVE — PORTAL
+   IMPORTANT:
+   8-BALL + 9-BALL REMAIN SIDE BY SIDE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .portal-hero {
+    width:
+      calc(100% - 24px);
+
+    padding:
+      65px 0 35px;
+  }
+
+  .portal-hero h1 {
+    font-size:
+      clamp(48px,14vw,75px);
+
+    letter-spacing:
+      -4px;
+  }
+
+  .disciplines {
+    width:
+      calc(100% - 24px);
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
+
+    gap: 12px;
+
+    padding-bottom: 55px;
+  }
+
+  .discipline-card {
+    min-height: 270px;
+
+    flex-direction: column !important;
+
+    justify-content: center;
+
+    text-align: center;
+
+    gap: 16px;
+
+    padding:
+      22px 12px;
+  }
+
+  .discipline-ball {
+    flex:
+      0 0 78px;
+
+    width: 78px;
+    height: 78px;
+
+    font-size: 32px;
+  }
+
+  .discipline-info h2 {
+    font-size: 25px;
+  }
+
+  .discipline-info p {
+    margin-bottom: 14px;
+
+    font-size: 10px;
+  }
+
+  .discipline-button {
+    padding:
+      8px 9px;
+
+    font-size: 8px;
   }
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   RESPONSIVE — SMALL PHONE
    ========================================================= */
 
-@media (max-width: 600px) {
-
-  .container {
-    width:
-      calc(100% - 22px);
-  }
+@media (max-width: 480px) {
 
   .topbar {
     min-height: 65px;
@@ -1321,7 +1594,7 @@ footer {
     letter-spacing: 1.5px;
   }
 
-  .brand::after {
+  .brand small {
     display: none;
   }
 
@@ -1331,9 +1604,14 @@ footer {
 
   nav a {
     padding:
-      8px 8px;
+      8px 7px;
 
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  .container {
+    width:
+      calc(100% - 22px);
   }
 
   .hero {
@@ -1347,15 +1625,11 @@ footer {
 
   .hero h1 {
     font-size:
-      clamp(40px, 13vw, 65px);
-
-    letter-spacing:
-      -3px;
+      clamp(40px,13vw,65px);
   }
 
   .hero p {
-    font-size:
-      14px;
+    font-size: 14px;
   }
 
   .hero::before {
@@ -1376,8 +1650,7 @@ footer {
   }
 
   .section-head h2 {
-    font-size:
-      25px;
+    font-size: 25px;
   }
 
   .stats {
@@ -1391,210 +1664,58 @@ footer {
   }
 
   .stats strong {
-    font-size:
-      24px;
+    font-size: 24px;
   }
 
   .stats span {
-    font-size:
-      9px;
+    font-size: 9px;
   }
 
   .group-title {
-    min-height:
-      68px;
+    min-height: 68px;
 
     padding:
       0 15px;
   }
 
   .group-title span {
-    font-size:
-      14px;
+    font-size: 14px;
   }
 
   th {
     padding:
       10px 7px;
 
-    font-size:
-      8px;
+    font-size: 8px;
   }
 
   td {
     padding:
       8px 7px;
 
-    font-size:
-      11px;
+    font-size: 11px;
   }
 
   .bracket-round {
-    padding:
-      17px;
+    padding: 17px;
   }
 
   .bracket-match {
     grid-template-columns:
       auto 1fr;
 
-    gap:
-      8px;
+    gap: 8px;
   }
 
   .bracket-match span:not(:first-child) {
-    grid-column:
-      2;
+    grid-column: 2;
   }
 
   .match-item {
-    flex-wrap:
-      wrap;
+    flex-wrap: wrap;
   }
 
   .match-score {
-    margin-left:
-      auto;
+    margin-left: auto;
   }
 }
-
-
-/* =========================================================
-   SUBTLE PREMIUM GLOW
-   ========================================================= */
-
-.group-card,
-.bracket-round,
-.score-form,
-.stats {
-  position: relative;
-}
-
-.group-card::after,
-.bracket-round::after,
-.score-form::after,
-.stats::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  border-radius:
-    inherit;
-
-  pointer-events: none;
-
-  box-shadow:
-    inset 0 1px
-    rgba(255, 255, 255, 0.035);
-}
-
-
-/* =========================================================
-   8-BALL / 9-BALL DISCIPLINE ACCENT
-   ========================================================= */
-
-body.discipline-8ball .eyebrow::before {
-  content: "8";
-}
-
-body.discipline-9ball .eyebrow::before {
-  content: "9";
-}
-
-
-/* =========================================================
-   SELECTION
-   ========================================================= */
-
-::selection {
-  background:
-    rgba(245, 196, 81, 0.25);
-
-  color:
-    #fff;
-}
-
-/* =========================================================
-   PAGINA PRINCIPALA — 8 BALL / 9 BALL STANGA-DREAPTA
-   ========================================================= */
-
-.disciplines {
-  width: min(1100px, calc(100% - 36px));
-  margin: 0 auto;
-  padding: 30px 0 80px;
-
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-}
-
-.discipline-card {
-  position: relative;
-  min-height: 300px;
-
-  display: flex;
-  align-items: center;
-  gap: 28px;
-
-  padding: 35px;
-
-  overflow: hidden;
-
-  border: 1px solid var(--line);
-  border-radius: 20px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.055),
-      rgba(255,255,255,.012)
-    );
-
-  box-shadow: 0 20px 60px rgba(0,0,0,.28);
-
-  transition:
-    transform .25s ease,
-    border-color .25s ease;
-}
-
-.discipline-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(245,196,81,.35);
-}
-
-.discipline-ball {
-  flex: 0 0 105px;
-
-  width: 105px;
-  height: 105px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle at 32% 28%,
-      #fff 0 8%,
-      #d9dde2 9% 55%,
-      #9299a2 100%
-    );
-
-  color: #11151a;
-
-  font-size: 42px;
-  font-weight: 950;
-
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.4),
-    inset -10px -12px 18px rgba(0,0,0,.15);
-}
-
-.card-9ball .discipline-ball {
-  background:
-    radial-gradient(
-     
