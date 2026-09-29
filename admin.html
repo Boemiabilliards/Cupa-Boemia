@@ -14,82 +14,159 @@
 <body>
 
 <header class="topbar">
+
   <div class="brand">
+
     <div class="ball">9</div>
 
     <div>
       <b>CUPA BOEMIA</b>
       <small>ADMIN • EDIȚIA 4</small>
     </div>
+
   </div>
 
   <nav>
     <a href="index.html">← Site public</a>
   </nav>
+
 </header>
 
 
 <main>
 
+
+<!-- =====================================================
+     ADAUGĂ REZULTAT
+     ===================================================== -->
+
 <section class="section">
 
   <div class="section-head">
+
     <div>
-      <div class="eyebrow">ADMINISTRARE</div>
-      <h2>Introdu rezultat</h2>
+
+      <div class="eyebrow">
+        ADMINISTRARE
+      </div>
+
+      <h2>
+        Introdu rezultat
+      </h2>
+
     </div>
 
-    <p>Adaugă rezultatele meciurilor în clasamentul live.</p>
+    <p>
+      Adaugă rezultatele meciurilor în clasamentul live.
+    </p>
+
   </div>
 
 
   <form id="scoreForm" class="score-form">
 
+
     <label>
+
       DISCIPLINĂ
 
-      <select id="scoreDiscipline" required>
-        <option value="9ball">9-BALL</option>
-        <option value="8ball">8-BALL</option>
+      <select
+        id="scoreDiscipline"
+        required
+      >
+
+        <option value="9ball">
+          9-BALL
+        </option>
+
+        <option value="8ball">
+          8-BALL
+        </option>
+
       </select>
+
     </label>
 
 
     <label>
+
       GRUPĂ
 
-      <select id="scoreGroup" required>
-        <option value="">Alege grupa</option>
-        <option value="A">Grupa A</option>
-        <option value="B">Grupa B</option>
-        <option value="C">Grupa C</option>
-        <option value="D">Grupa D</option>
-        <option value="E">Grupa E</option>
+      <select
+        id="scoreGroup"
+        required
+      >
+
+        <option value="">
+          Alege grupa
+        </option>
+
+        <option value="A">
+          Grupa A
+        </option>
+
+        <option value="B">
+          Grupa B
+        </option>
+
+        <option value="C">
+          Grupa C
+        </option>
+
+        <option value="D">
+          Grupa D
+        </option>
+
+        <option value="E">
+          Grupa E
+        </option>
+
       </select>
+
     </label>
 
 
     <label>
+
       JUCĂTOR 1
 
-      <select id="scorePlayer1" required>
-        <option value="">Alege jucătorul</option>
+      <select
+        id="scorePlayer1"
+        required
+      >
+
+        <option value="">
+          Alege jucătorul
+        </option>
+
       </select>
+
     </label>
 
 
     <label>
+
       JUCĂTOR 2
 
-      <select id="scorePlayer2" required>
-        <option value="">Alege jucătorul</option>
+      <select
+        id="scorePlayer2"
+        required
+      >
+
+        <option value="">
+          Alege jucătorul
+        </option>
+
       </select>
+
     </label>
 
 
     <div class="score-inputs">
 
+
       <label>
+
         SCOR JUCĂTOR 1
 
         <input
@@ -99,10 +176,12 @@
           max="6"
           required
         >
+
       </label>
 
 
       <label>
+
         SCOR JUCĂTOR 2
 
         <input
@@ -112,51 +191,72 @@
           max="6"
           required
         >
+
       </label>
+
 
     </div>
 
 
-    <button type="submit" class="btn primary">
+    <button
+      type="submit"
+      class="btn primary"
+    >
+
       SALVEAZĂ REZULTAT
+
     </button>
 
 
     <div id="scoreMessage"></div>
+
 
   </form>
 
 </section>
 
 
+
+<!-- =====================================================
+     TOATE MECIURILE
+     ===================================================== -->
+
 <section class="section">
+
 
   <div class="section-head">
 
     <div>
-      <div class="eyebrow">REZULTATE</div>
-      <h2>Ultimele meciuri</h2>
+
+      <div class="eyebrow">
+        GESTIONARE
+      </div>
+
+      <h2>
+        Toate meciurile
+      </h2>
+
     </div>
+
+    <p>
+      Vezi, modifică sau șterge rezultatele introduse.
+    </p>
 
   </div>
 
-  <div id="recentMatches" class="matches"></div>
 
-</section>
-
-</main>
-
-
-<footer>
-
-  <span>Cupa Boemia</span>
-
-  <b>Ediția 4</b>
-
-</footer>
+  <div
+    class="score-form"
+    style="
+      display:grid;
+      grid-template-columns:
+        repeat(auto-fit,minmax(180px,1fr));
+      gap:12px;
+      margin-bottom:22px;
+    "
+  >
 
 
-<script src="app.js"></script>
+    <label>
 
-</body>
-</html>
+     
