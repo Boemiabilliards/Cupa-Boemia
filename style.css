@@ -17,6 +17,44 @@
   --accent: #f5c451;
   --accent-soft: rgba(245, 196, 81, 0.16);
 
+
+/* =====================================================
+   PODIUM - PRIMELE 3 POZITII
+   ===================================================== */
+
+.group-card tbody tr:nth-child(1) {
+  background: rgba(212, 175, 55, 0.14);
+}
+
+.group-card tbody tr:nth-child(1) td:first-child strong {
+  color: #d4af37;
+  font-size: 1.05em;
+}
+
+.group-card tbody tr:nth-child(2) {
+  background: rgba(192, 192, 192, 0.10);
+}
+
+.group-card tbody tr:nth-child(2) td:first-child strong {
+  color: #c0c0c0;
+  font-size: 1.05em;
+}
+
+.group-card tbody tr:nth-child(3) {
+  background: rgba(205, 127, 50, 0.10);
+}
+
+.group-card tbody tr:nth-child(3) td:first-child strong {
+  color: #cd7f32;
+  font-size: 1.05em;
+}
+
+/* Evidențiem și numele primilor 3 */
+.group-card tbody tr:nth-child(1) td:nth-child(2) strong,
+.group-card tbody tr:nth-child(2) td:nth-child(2) strong,
+.group-card tbody tr:nth-child(3) td:nth-child(2) strong {
+  font-weight: 800;
+}
   --success: #62d99b;
   --danger: #ff6b6b;
 
