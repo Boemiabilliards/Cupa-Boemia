@@ -1870,3 +1870,36 @@ body.discipline-8ball .group-title span::before {
   color: #ffffff;
   border-color: #d9d9d9;
 }
+/* BILE CORECTE ÎN BARA DE SUS — 9-BALL / 8-BALL */
+
+body.discipline-9ball .brand .ball {
+color: #17130a;
+background: linear-gradient(
+to bottom,
+#f7d45d 0%,
+#eab82f 24%,
+#fff 25%,
+#fff 75%,
+#e9bd43 76%,
+#c99420 100%
+);
+border: 1px solid rgba(255,255,255,.55);
+box-shadow:
+0 8px 25px rgba(245,196,81,.2),
+inset -4px -5px 7px rgba(0,0,0,.18);
+}
+
+body.discipline-8ball .brand .ball {
+color: #fff;
+background: radial-gradient(
+circle at 32% 24%,
+#454545 0%,
+#202020 42%,
+#080808 78%,
+#000 100%
+);
+border: 1px solid rgba(255,255,255,.22);
+box-shadow:
+0 8px 25px rgba(0,0,0,.4),
+inset -4px -5px 7px rgba(0,0,0,.5);
+}
