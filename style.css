@@ -1841,3 +1841,32 @@ body.discipline-9ball .eyebrow::before {
     margin-left: auto;
   }
 }
+
+/* =========================================================
+   BILE DISTINCTE ÎN CLASAMENTELE CUPA BOEMIA
+   ========================================================= */
+
+.group-title span::before {
+  content: "9";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #f5c451;
+  color: #171717;
+  border: 2px solid #ffffff;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+body.discipline-8ball .group-title span::before {
+  content: "8";
+  background: #171717;
+  color: #ffffff;
+  border-color: #d9d9d9;
+}
