@@ -10,13 +10,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* ================================
-       ADMIN — DESIGN NOU
-       ================================ */
-
     .admin-page {
       --admin-gold: #f5c451;
-      --admin-panel: rgba(255,255,255,.035);
       width: min(1100px, calc(100% - 28px));
       margin: 0 auto;
       padding: 34px 0 60px;
@@ -30,12 +25,6 @@
       min-height: 76px;
     }
 
-    .admin-logo {
-      display: flex;
-      align-items: center;
-      min-width: 0;
-    }
-
     .admin-logo img {
       display: block;
       width: 145px;
@@ -46,7 +35,6 @@
     }
 
     .admin-public-link {
-      flex-shrink: 0;
       color: #c5cbd3;
       font-size: 14px;
       font-weight: 750;
@@ -66,9 +54,6 @@
     }
 
     .admin-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
       color: var(--admin-gold);
       font-size: 11px;
       font-weight: 900;
@@ -79,14 +64,12 @@
     .admin-heading h1 {
       margin: 10px 0 8px;
       font-size: clamp(30px, 5vw, 42px);
-      line-height: 1.15;
-      letter-spacing: -1px;
     }
 
-    .admin-heading p {
-      margin: 0;
+    .admin-heading p,
+    .admin-card-heading p {
       color: #9aa3ad;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.6;
     }
 
@@ -113,18 +96,10 @@
       font-size: clamp(23px, 4vw, 30px);
     }
 
-    .admin-card-heading p {
-      margin: 0;
-      color: #9aa3ad;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
     #scoreForm {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      min-width: 0;
     }
 
     #scoreForm label,
@@ -151,8 +126,6 @@
       background: #101419;
       color: #f5f6f8;
       font-size: 16px;
-      font-weight: 550;
-      letter-spacing: 0;
       outline: none;
     }
 
@@ -168,8 +141,6 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
     }
-
-    /* Cei doi jucători, față în față */
 
     .admin-players-grid {
       display: grid;
@@ -199,9 +170,8 @@
       align-items: center;
       gap: 10px;
       margin-bottom: 20px;
-      font-size: clamp(13px, 2.4vw, 16px);
+      font-size: 15px;
       font-weight: 900;
-      letter-spacing: .5px;
     }
 
     .admin-player-number {
@@ -230,19 +200,16 @@
     #scoreForm .admin-score-input {
       min-height: 76px;
       text-align: center;
-      font-size: clamp(28px, 5vw, 38px);
+      font-size: 36px;
       font-weight: 950;
       padding: 8px;
       border-color: rgba(245,196,81,.35);
     }
 
     .admin-score-hint {
-      margin-top: 9px;
       color: #8f98a3;
       font-size: 11px;
       line-height: 1.5;
-      letter-spacing: 0;
-      font-weight: 500;
     }
 
     .admin-save-button {
@@ -255,18 +222,11 @@
       color: #17130a;
       font-size: 16px;
       font-weight: 950;
-      letter-spacing: .4px;
       cursor: pointer;
-      transition: transform .15s ease, filter .15s ease;
     }
 
     .admin-save-button:hover {
       filter: brightness(1.06);
-      transform: translateY(-1px);
-    }
-
-    .admin-save-button:active {
-      transform: scale(.99);
     }
 
     #scoreMessage {
@@ -290,6 +250,19 @@
       max-width: 100%;
     }
 
+    .admin-list button {
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 8px;
+      background: #20262d;
+      color: white;
+      cursor: pointer;
+    }
+
+    .admin-list button:hover {
+      border-color: #f5c451;
+    }
+
     @media (max-width: 560px) {
       .admin-page {
         width: calc(100% - 20px);
@@ -310,10 +283,6 @@
         font-size: 12px;
       }
 
-      .admin-heading {
-        margin-top: 24px;
-      }
-
       .admin-card {
         padding: 15px;
         border-radius: 17px;
@@ -323,7 +292,8 @@
         gap: 16px;
       }
 
-      .admin-settings-grid {
+      .admin-settings-grid,
+      .admin-filters {
         gap: 10px;
       }
 
@@ -365,25 +335,12 @@
         font-size: 10px;
         gap: 7px;
       }
-
-      .admin-player-card label + label {
-        margin-top: 16px;
-      }
-
-      .admin-save-button {
-        min-height: 55px;
-        font-size: 14px;
-      }
     }
 
     @media (max-width: 350px) {
       .admin-settings-grid,
       .admin-filters {
         grid-template-columns: 1fr;
-      }
-
-      .admin-player-card {
-        padding: 8px;
       }
     }
   </style>
@@ -402,8 +359,6 @@
   </header>
 
   <main class="admin-page">
-
-    <!-- INTRODUCERE REZULTAT -->
 
     <section class="admin-card">
 
@@ -426,22 +381,26 @@
           </label>
 
           <label>
-            GRUPĂ
+            FAZĂ / GRUPĂ
             <select id="scoreGroup" required>
-              <option value="">Alege grupa</option>
+              <option value="">Alege grupa sau faza</option>
               <option value="A">Grupa A</option>
               <option value="B">Grupa B</option>
               <option value="C">Grupa C</option>
               <option value="D">Grupa D</option>
               <option value="E">Grupa E</option>
+              <option value="P-M1">Playoff — M1</option>
+              <option value="P-M2">Playoff — M2</option>
+              <option value="P-M3">Playoff — M3</option>
+              <option value="P-M4">Playoff — M4</option>
+              <option value="P-SF1">Playoff — Semifinala 1</option>
+              <option value="P-SF2">Playoff — Semifinala 2</option>
             </select>
           </label>
 
         </div>
 
         <div class="admin-players-grid">
-
-          <!-- JUCĂTORUL 1 -->
 
           <div class="admin-player-card player-one">
 
@@ -472,8 +431,6 @@
             </label>
 
           </div>
-
-          <!-- JUCĂTORUL 2 -->
 
           <div class="admin-player-card player-two">
 
@@ -509,6 +466,7 @@
 
         <div class="admin-score-hint">
           Verifică disciplina, grupa, numele ambilor jucători și scorurile înainte să salvezi.
+          Pentru playoff, semifinalele devin disponibile după înregistrarea meciurilor M1–M4.
         </div>
 
         <button type="submit" class="admin-save-button">
@@ -520,8 +478,6 @@
       </form>
 
     </section>
-
-    <!-- TOATE MECIURILE -->
 
     <section class="admin-card">
 
@@ -543,14 +499,20 @@
         </label>
 
         <label>
-          FILTRU GRUPĂ
+          FILTRU GRUPĂ / FAZĂ
           <select id="adminFilterGroup">
-            <option value="">Toate grupele</option>
+            <option value="">Toate grupele și fazele</option>
             <option value="A">Grupa A</option>
             <option value="B">Grupa B</option>
             <option value="C">Grupa C</option>
             <option value="D">Grupa D</option>
             <option value="E">Grupa E</option>
+            <option value="P-M1">Playoff M1</option>
+            <option value="P-M2">Playoff M2</option>
+            <option value="P-M3">Playoff M3</option>
+            <option value="P-M4">Playoff M4</option>
+            <option value="P-SF1">Semifinala 1</option>
+            <option value="P-SF2">Semifinala 2</option>
           </select>
         </label>
 
@@ -561,8 +523,6 @@
       </div>
 
     </section>
-
-    <!-- MECIURI RECENTE -->
 
     <section class="admin-card">
 
