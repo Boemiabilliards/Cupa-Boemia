@@ -564,7 +564,36 @@ async function loadMatches() {
    ADMIN — OPȚIUNI JUCĂTORI
 ===================================================== */
 
+
 function getAdminParticipants() {
+  const group = document.getElementById("scoreGroup")?.value;
+  const discipline = document.getElementById("scoreDiscipline")?.value;
+
+  if (!group) return [];
+
+  const matches = getDisciplineMatches(discipline);
+
+  if (GROUPS[group]) {
+    return [...GROUPS[group]];
+  }
+
+  if (group.startsWith("P-M")) {
+    const participants = getPlayoffParticipants(matches);
+    return participants[group] || [];
+  }
+
+  if (group === "P-SF1" || group === "P-SF2") {
+    const winners = getPlayoffPlayers(matches);
+    const sources = group === "P-SF1"
+      ? ["P-M1", "P-M3"]
+      : ["P-M2", "P-M4"];
+
+    return sources.map(code => winners[code]).filter(Boolean);
+  }
+
+  return [];
+}
+ {
   const group = document.getElementById("scoreGroup")?.value;
   const discipline = document.getElementById("scoreDiscipline")?.value;
 
