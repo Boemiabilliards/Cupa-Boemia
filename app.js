@@ -1,3 +1,4 @@
+
 "use strict";
 
 /* =====================================================
@@ -5,7 +6,6 @@
 ===================================================== */
 
 const SUPABASE_URL = "https://huxfvsjfgkbvzncgqjyl.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_mVu4zRZY5-7Ay7n7uUqk1A_4BRk_AgA";
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -106,9 +106,12 @@ function getMatchByCode(code, matches = allMatches) {
 
 function getWinner(match) {
   if (!match) return null;
+
   const a = Number(match.score1);
   const b = Number(match.score2);
+
   if (a === b) return null;
+
   return a > b ? match.player1 : match.player2;
 }
 
@@ -279,7 +282,6 @@ function getPlayoffParticipants(matches = allMatches) {
 
 function getPlayoffPlayers(matches = allMatches) {
   const participants = getPlayoffParticipants(matches);
-
   const result = {};
 
   Object.keys(participants).forEach(code => {
@@ -384,7 +386,6 @@ function renderTop8(matches = allMatches) {
   if (!container) return;
 
   const q = getQualifiedPlayers(matches);
-  const winners = getPlayoffPlayers(matches);
 
   const sf1 = getMatchByCode("P-SF1", matches);
   const sf2 = getMatchByCode("P-SF2", matches);
@@ -429,9 +430,11 @@ function renderTop8(matches = allMatches) {
 
 function groupLabel(group) {
   if (!group) return "";
+
   if (group.startsWith("P-")) {
     return "Playoff " + group.replace("P-", "");
   }
+
   return "Grupa " + group;
 }
 
@@ -553,6 +556,7 @@ async function loadMatches() {
 
     containers.forEach(id => {
       const element = document.getElementById(id);
+
       if (element) {
         element.innerHTML = `<p>Eroare la încărcarea datelor: ${escapeHtml(error.message)}</p>`;
       }
@@ -563,7 +567,6 @@ async function loadMatches() {
 /* =====================================================
    ADMIN — OPȚIUNI JUCĂTORI
 ===================================================== */
-
 
 function getAdminParticipants() {
   const group = document.getElementById("scoreGroup")?.value;
@@ -584,34 +587,7 @@ function getAdminParticipants() {
 
   if (group === "P-SF1" || group === "P-SF2") {
     const winners = getPlayoffPlayers(matches);
-    const sources = group === "P-SF1"
-      ? ["P-M1", "P-M3"]
-      : ["P-M2", "P-M4"];
 
-    return sources.map(code => winners[code]).filter(Boolean);
-  }
-
-  return [];
-}
- {
-  const group = document.getElementById("scoreGroup")?.value;
-  const discipline = document.getElementById("scoreDiscipline")?.value;
-
-  if (!group) return [];
-
-  const matches = getDisciplineMatches(discipline);
-
-  if (GROUPS[group]) {
-    return [...GROUPS[group]];
-  }
-
-  if (group.startsWith("P-M")) {
-    const participants = getPlayoffParticipants(matches);
-    return participants[group.replace("P-", "")] || [];
-  }
-
-  if (group === "P-SF1" || group === "P-SF2") {
-    const winners = getPlayoffPlayers(matches);
     const sources = group === "P-SF1"
       ? ["P-M1", "P-M3"]
       : ["P-M2", "P-M4"];
